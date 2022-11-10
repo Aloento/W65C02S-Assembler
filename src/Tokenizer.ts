@@ -156,7 +156,9 @@ export function Tokenizer(input: string) {
       continue;
     }
 
-    throw new TypeError("Syntax Error: " + char + " at " + current);
+    throw new TypeError(`Syntax Error: ${char} at ${current}.\n
+    Recent Tokens: ${tokens.slice(-5).map(x => x.value).join(" ")}\n
+    Recent String: ${input.slice(current - 10, current + 10)}`);
   }
 
   return tokens;
