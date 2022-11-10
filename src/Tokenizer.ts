@@ -3,7 +3,7 @@ import { Register } from "./Register";
 
 export interface Token {
   type: TokenType;
-  value: string | Register | OpCode;
+  value: string | Register | OpCode | number;
 }
 
 export const enum TokenType {
@@ -20,13 +20,17 @@ export const enum TokenType {
    */
   Number,
   /**
-   * any_string: EOF
+   * Kind of [0x1234]
+   */
+  Pointer,
+  /**
+   * any_string1: EOF
    */
   Label,
   /**
-   * Some ASCII string
+   * String
    */
-  Argument,
+  Arugment,
 }
 
 function isNewLine(token: string): boolean {
@@ -48,8 +52,8 @@ export function Tokenizer(input: string) {
   while (current < input.length) {
     const char = input[current];
 
-    // Skip whitespace
-    if (char === " " || char === "\t") {
+    // Skip whitespace and comma and new line
+    if (char === " " || char === "\t" || char === "," || isNewLine(char)) {
       current++;
       continue;
     }
@@ -62,13 +66,7 @@ export function Tokenizer(input: string) {
       continue;
     }
 
-    // Skip new lines
-    if (isNewLine(char)) {
-      current++;
-      continue;
-    }
-
-    const norm = char.toLocaleUpperCase();
+    const norm = char.toUpperCase();
 
     // Handle OpCode
     if (norm in OpCode) {
@@ -80,6 +78,72 @@ export function Tokenizer(input: string) {
       continue;
     }
 
+    // Handle Register
+    if (norm in Register) {
+      tokens.push({
+        type: TokenType.Register,
+        value: Register[norm as keyof typeof Register],
+      });
+      current++;
+      continue;
+    }
 
+    // Handle HexNumber 0xFF
+    if (char + input[current + 1] === "0x") {
+      let value = "";
+      current += 2;
+
+      while (current < input.length && /[0-9A-F]/.test(input[current])) {
+        value += input[current];
+        current++;
+      }
+
+      tokens.push({
+        type: TokenType.Number,
+        value: parseInt(value, 16),
+      });
+
+      continue;
+    }
+
+    // Handle Pointer [0x1234]
+    if (char === "[") {
+      let value = "";
+      current++;
+
+      while (current < input.length && input[current] !== "]") {
+        value += input[current];
+        current++;
+      }
+
+      tokens.push({
+        type: TokenType.Pointer,
+        value: parseInt(value, 16),
+      });
+
+      current++;
+      continue;
+    }
+
+    // Handle Label and Argument
+    if (/[a-zA-Z_]/.test(char)) {
+      let value = "";
+      while (current < input.length && /[a-zA-Z0-9_]/.test(input[current])) {
+        value += input[current];
+        current++;
+      }
+
+      tokens.push({
+        type: input[current] === ":" ? TokenType.Label : TokenType.Arugment,
+        value,
+      });
+
+      current++;
+      continue;
+    }
+
+    throw new TypeError("Syntax Error: " + char + " at " + current);
   }
+
+  return tokens;
 }
