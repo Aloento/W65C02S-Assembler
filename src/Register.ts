@@ -1,4 +1,4 @@
-export const enum Register {
+export enum Register {
     /**
      * X 索引寄存器 Index Register X
      */

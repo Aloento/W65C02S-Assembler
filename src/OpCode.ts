@@ -1,313 +1,313 @@
-export const enum OpCode {
+export enum OpCode {
     /**
      * MOV X, Y
      */
-    MOV,
+    MOV = "MOV",
     /**
      * Same as ADC
      */
-    ADDC,
+    ADDC = "ADDC",
     /**
      * Same as SBC
      */
-    SUBC,
+    SUBC = "SUBC",
     /**
      * Same as ORA
      */
-    OR,
+    OR = "OR",
     /**
      * Same as EOR
      */
-    XOR,
+    XOR = "XOR",
     /**
      * Same as BEQ
      */
-    BZS,
+    BZS = "BZS",
     /**
      * Same as BNE
      */
-    BZC,
+    BZC = "BZC",
 
     ////////////////////////////////
 
     /**
      * ADd memory to accumulator with Carry
      */
-    ADC,
+    ADC = "ADC",
     /**
      * "AND" memory with accumulator
      */
-    AND,
+    AND = "AND",
     /**
      * Arithmetic Shift one bit Left, memory or accumulator
      */
-    ASL,
+    ASL = "ASL",
     /**
      * Branch on Bit Reset
      */
-    BBR,
+    BBR = "BBR",
     /**
      * Branch of Bit Set
      */
-    BBS,
+    BBS = "BBS",
     /**
      * Branch on Carry Clear (Pc=0)
      */
-    BCC,
+    BCC = "BCC",
     /**
      * Branch on Carry Set (Pc=1)
      */
-    BCS,
+    BCS = "BCS",
     /**
      * Branch if EQual (Pz=1)
      */
-    BEQ,
+    BEQ = "BEQ",
     /**
      * BIt Test
      */
-    BIT,
+    BIT = "BIT",
     /**
      * Branch if result MInus (Pn=1)
      */
-    BMI,
+    BMI = "BMI",
     /**
      * Branch if Not Equal (Pz=0)
      */
-    BNE,
+    BNE = "BNE",
     /**
      * Branch if result PLus (Pn=0)
      */
-    BPL,
+    BPL = "BPL",
     /**
      * BRanch Always
      */
-    BRA,
+    BRA = "BRA",
     /**
      * BReaK instruction
      */
-    BRK,
+    BRK = "BRK",
     /**
      * Branch on oVerflow Clear (Pv=0)
      */
-    BVC,
+    BVC = "BVC",
     /**
      * Branch on oVerflow Set (Pv=1)
      */
-    BVS,
+    BVS = "BVS",
     /**
      * CLear Cary flag
      */
-    CLC,
+    CLC = "CLC",
     /**
      * CLear Decimal mode
      */
-    CLD,
+    CLD = "CLD",
     /**
      * CLear Interrupt disable bit
      */
-    CLI,
+    CLI = "CLI",
     /**
      * CLear oVerflow flag
      */
-    CLV,
+    CLV = "CLV",
     /**
      * CoMPare memory and accumulator
      */
-    CMP,
+    CMP = "CMP",
     /**
      * ComPare memory and X register
      */
-    CPX,
+    CPX = "CPX",
     /**
      * ComPare memory and Y register
      */
-    CPY,
+    CPY = "CPY",
     /**
      * DECrement memory or accumulate by one
      */
-    DEC,
+    DEC = "DEC",
     /**
      * DEcrement X by one
      */
-    DEX,
+    DEX = "DEX",
     /**
      * DEcrement Y by one
      */
-    DEY,
+    DEY = "DEY",
     /**
      * "Exclusive OR" memory with accumulate
      */
-    EOR,
+    EOR = "EOR",
     /**
      * INCrement memory or accumulate by one
      */
-    INC,
+    INC = "INC",
     /**
      * INcrement X register by one
      */
-    INX,
+    INX = "INX",
     /**
      * INcrement Y register by one
      */
-    INY,
+    INY = "INY",
     /**
      * JuMP to new location
      */
-    JMP,
+    JMP = "JMP",
     /**
      * Jump to new location Saving Return (Jump to SubRoutine)
      */
-    JSR,
+    JSR = "JSR",
     /**
      * LoaD Accumulator with memory
      */
-    LDA,
+    LDA = "LDA",
     /**
      * LoaD the X register with memory
      */
-    LDX,
+    LDX = "LDX",
     /**
      * LoaD the Y register with memory
      */
-    LDY,
+    LDY = "LDY",
     /**
      * Logical Shift one bit Right memory or accumulator
      */
-    LSR,
+    LSR = "LSR",
     /**
      * No OPeration
      */
-    NOP,
+    NOP = "NOP",
     /**
-     * "OR" mem ory with Accumulator
+     * "OR" memory with Accumulator
      */
-    ORA,
+    ORA = "ORA",
     /**
-     * PusH Acc umulator on stack
+     * PusH Accumulator on stack
      */
-    PHA,
+    PHA = "PHA",
     /**
-     * PusH Proc essor status on stack
+     * PusH Processor status on stack
      */
-    PHP,
+    PHP = "PHP",
     /**
-     * PusH X re gister on stack
+     * PusH X register on stack
      */
-    PHX,
+    PHX = "PHX",
     /**
-     * PusH Y re gister on stack
+     * PusH Y register on stack
      */
-    PHY,
+    PHY = "PHY",
     /**
-     * PuLl Accu mulator from stack
+     * PuLl Accumulator from stack
      */
-    PLA,
+    PLA = "PLA",
     /**
-     * PuLl Proce ssor status from stack
+     * PuLl Processor status from stack
      */
-    PLP,
+    PLP = "PLP",
     /**
-     * PuLl X reg ister from stack
+     * PuLl X register from stack
      */
-    PLX,
+    PLX = "PLX",
     /**
-     * PuLl Y reg ister from stack
+     * PuLl Y register from stack
      */
-    PLY,
+    PLY = "PLY",
     /**
-     * Reset Mem ory Bit
+     * Reset Memory Bit
      */
-    RMB,
+    RMB = "RMB",
     /**
-     * ROtate on e bit Left memory or accumulator
+     * ROtate one bit Left memory or accumulator
      */
-    ROL,
+    ROL = "ROL",
     /**
-     * ROtate on e bit Right memory or accumulator
+     * ROtate one bit Right memory or accumulator
      */
-    ROR,
+    ROR = "ROR",
     /**
-     * ReTurn fro m Interrupt
+     * ReTurn from Interrupt
      */
-    RTI,
+    RTI = "RTI",
     /**
-     * ReTurn fro m Subroutine
+     * ReTurn from Subroutine
      */
-    RTS,
+    RTS = "RTS",
     /**
      * SuBtract memory from accumulator with borrow (Carry bit)
      */
-    SBC,
+    SBC = "SBC",
     /**
      * SEt Carry
      */
-    SEC,
+    SEC = "SEC",
     /**
-     * SEt Decim al mode
+     * SEt Decimal mode
      */
-    SED,
+    SED = "SED",
     /**
-     * SEt Interru pt disable status
+     * SEt Interrupt disable status
      */
-    SEI,
+    SEI = "SEI",
     /**
-     * Set Memo ry Bit
+     * Set Memory Bit
      */
-    SMB,
+    SMB = "SMB",
     /**
-     * STore Acc umulator in memory
+     * STore Accumulator in memory
      */
-    STA,
+    STA = "STA",
     /**
      * SToP mod e
      */
-    STP,
+    STP = "STP",
     /**
      * STore the X register in memory
      */
-    STX,
+    STX = "STX",
     /**
      * STore the Y register in memory
      */
-    STY,
+    STY = "STY",
     /**
-     * STore Zer o in memory
+     * STore Zero in memory
      */
-    STZ,
+    STZ = "STZ",
     /**
-     * Transfer th e Accumulator to the X register
+     * Transfer the Accumulator to the X register
      */
-    TAX,
+    TAX = "TAX",
     /**
-     * Transfer th e Accumulator to the Y register
+     * Transfer the Accumulator to the Y register
      */
-    TAY,
+    TAY = "TAY",
     /**
      * Test and R eset memory Bit
      */
-    TRB,
+    TRB = "TRB",
     /**
      * Test and S et memory Bit
      */
-    TSB,
+    TSB = "TSB",
     /**
-     * Transfer th e Stack pointer to the X register
+     * Transfer the Stack pointer to the X register
      */
-    TSX,
+    TSX = "TSX",
     /**
-     * Transfer th e X register to the Accumulator
+     * Transfer the X register to the Accumulator
      */
-    TXA,
+    TXA = "TXA",
     /**
      * Transfer the X register to the Stack pointer register
      */
-    TXS,
+    TXS = "TXS",
     /**
      * Transfer Y register to the Accumulator
      */
-    TYA,
+    TYA = "TYA",
     /**
      * WAit for In terrupt
      */
-    WAI
+    WAI = "WAI",
 }

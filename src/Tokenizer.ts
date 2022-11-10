@@ -27,10 +27,10 @@ export const enum TokenType {
    * Some ASCII string
    */
   Argument,
-  /**
-   * \n or \r\n or \r or ;
-   */
-  EOF,
+}
+
+function isNewLine(token: string): boolean {
+  return token === "\n" || token === "\r";
 }
 
 /**
@@ -42,5 +42,44 @@ export function Tokenizer(input: string) {
   let current = 0;
 
   // Array of tokens
-  let tokens: Token[] = [];
+  const tokens: Token[] = [];
+
+  // Loop through input string
+  while (current < input.length) {
+    const char = input[current];
+
+    // Skip whitespace
+    if (char === " " || char === "\t") {
+      current++;
+      continue;
+    }
+
+    // Skip comments
+    if (char === ";") {
+      while (current < input.length && !isNewLine(input[current])) {
+        current++;
+      }
+      continue;
+    }
+
+    // Skip new lines
+    if (isNewLine(char)) {
+      current++;
+      continue;
+    }
+
+    const norm = char.toLocaleUpperCase();
+
+    // Handle OpCode
+    if (norm in OpCode) {
+      tokens.push({
+        type: TokenType.OpCode,
+        value: OpCode[norm as keyof typeof OpCode],
+      });
+      current++;
+      continue;
+    }
+
+
+  }
 }
