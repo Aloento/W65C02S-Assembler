@@ -113,7 +113,7 @@ export function Tokenizer(input: string) {
       continue;
     }
 
-    // Handle Pointer [0x1234]
+    // Handle Pointer [ 0x1234 ]
     if (char === "[") {
       let value = "";
       current++;
@@ -128,6 +128,7 @@ export function Tokenizer(input: string) {
         value: parseInt(value, 16),
       });
 
+      current++;
       continue;
     }
 
@@ -139,10 +140,18 @@ export function Tokenizer(input: string) {
         current++;
       }
 
-      tokens.push({
-        type: input[current] === ":" ? TokenType.Label : TokenType.Arugment,
-        value,
-      });
+      if (input[current] === ":") {
+        tokens.push({
+          type: TokenType.Label,
+          value,
+        });
+        current++;
+      } else {
+        tokens.push({
+          type: TokenType.Arugment,
+          value,
+        });
+      }
 
       continue;
     }
