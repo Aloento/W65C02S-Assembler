@@ -66,25 +66,32 @@ export function Tokenizer(input: string) {
       continue;
     }
 
-    const norm = char.toUpperCase();
-
-    // Handle OpCode
-    if (norm in OpCode) {
+    // Handle Register
+    const upper = char.toUpperCase();
+    if (upper in Register) {
       tokens.push({
-        type: TokenType.OpCode,
-        value: OpCode[norm as keyof typeof OpCode],
+        type: TokenType.Register,
+        value: Register[upper as keyof typeof Register],
       });
+
       current++;
       continue;
     }
 
-    // Handle Register
-    if (norm in Register) {
+    // Handle OpCode
+    const op = [
+      input.slice(current, current + 2),
+      input.slice(current, current + 3),
+      input.slice(current, current + 4)
+    ].map(x => x.toUpperCase()).find(op => op in OpCode);
+
+    if (op) {
       tokens.push({
-        type: TokenType.Register,
-        value: Register[norm as keyof typeof Register],
+        type: TokenType.OpCode,
+        value: OpCode[op as keyof typeof OpCode]
       });
-      current++;
+
+      current += op.length;
       continue;
     }
 
@@ -121,7 +128,6 @@ export function Tokenizer(input: string) {
         value: parseInt(value, 16),
       });
 
-      current++;
       continue;
     }
 
@@ -138,7 +144,6 @@ export function Tokenizer(input: string) {
         value,
       });
 
-      current++;
       continue;
     }
 
