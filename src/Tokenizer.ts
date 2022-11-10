@@ -1,41 +1,36 @@
 import { OpCode } from "./OpCode";
+import { Register } from "./Register";
 
 export interface Token {
   type: TokenType;
   value: string | Register | OpCode;
 }
 
-export enum TokenType {
+export const enum TokenType {
   /**
-   * X, Y, A (Accumulator)
+   * X, Y, A ...
    */
   Register,
+  /**
+   * MOV, ADD ...
+   */
+  OpCode,
   /**
    * Kind of 0xFF
    */
   Number,
   /**
-   * any_string: \n
+   * any_string: EOF
    */
   Label,
   /**
    * Some ASCII string
    */
-  String,
-  /**
-   * ,
-   */
-  Comma,
+  Argument,
   /**
    * \n or \r\n or \r or ;
    */
   EOF,
-}
-
-export enum Register {
-  X,
-  Y,
-  A,
 }
 
 /**

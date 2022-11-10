@@ -1,4 +1,35 @@
-export enum OpCode {
+export const enum OpCode {
+    /**
+     * MOV X, Y
+     */
+    MOV,
+    /**
+     * Same as ADC
+     */
+    ADDC,
+    /**
+     * Same as SBC
+     */
+    SUBC,
+    /**
+     * Same as ORA
+     */
+    OR,
+    /**
+     * Same as EOR
+     */
+    XOR,
+    /**
+     * Same as BEQ
+     */
+    BZS,
+    /**
+     * Same as BNE
+     */
+    BZC,
+
+    ////////////////////////////////
+
     /**
      * ADd memory to accumulator with Carry
      */
