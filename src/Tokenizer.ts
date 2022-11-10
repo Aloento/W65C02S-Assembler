@@ -68,10 +68,10 @@ export function Tokenizer(input: string) {
 
     // Handle Register
     const upper = char.toUpperCase();
-    if (upper in Register) {
+    if (Object.values(Register).indexOf(upper as Register) !== -1) {
       tokens.push({
         type: TokenType.Register,
-        value: Register[upper as keyof typeof Register],
+        value: upper,
       });
 
       current++;
