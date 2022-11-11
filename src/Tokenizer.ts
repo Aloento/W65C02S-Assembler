@@ -6,7 +6,7 @@ export interface Token {
   value: string | Register | OpCode | number;
 }
 
-export const enum TokenType {
+export enum TokenType {
   /**
    * X, Y, A ...
    */
@@ -27,10 +27,6 @@ export const enum TokenType {
    * any_string1: EOF
    */
   Label,
-  /**
-   * String
-   */
-  Arugment,
 }
 
 function isNewLine(token: string): boolean {
@@ -47,6 +43,8 @@ export function Tokenizer(input: string) {
 
   // Array of tokens
   const tokens: Token[] = [];
+
+  const labels = new Set<string>();
 
   // Loop through input string
   while (current < input.length) {
@@ -66,16 +64,37 @@ export function Tokenizer(input: string) {
       continue;
     }
 
-    // Handle Register
-    const upper = char.toUpperCase();
-    if (Object.values(Register).indexOf(upper as Register) !== -1) {
-      tokens.push({
-        type: TokenType.Register,
-        value: upper,
-      });
+    // Handle Label
+    if (/[a-zA-Z_]/.test(char)) {
+      let value = "";
+      let i = current;
 
-      current++;
-      continue;
+      while (i < input.length && /[a-zA-Z0-9_]/.test(input[i])) {
+        value += input[i];
+        i++;
+      }
+
+      if (input[i] === ":") {
+        tokens.push({
+          type: TokenType.Label,
+          value,
+        });
+
+        labels.add(value);
+        current = i + 1;
+        continue;
+      }
+
+      // Handle Arugment
+      if (labels.has(value)) {
+        tokens.push({
+          type: TokenType.Label,
+          value,
+        });
+
+        current = i;
+        continue;
+      }
     }
 
     // Handle OpCode
@@ -92,6 +111,18 @@ export function Tokenizer(input: string) {
       });
 
       current += op.length;
+      continue;
+    }
+
+    // Handle Register
+    const upper = char.toUpperCase();
+    if (Object.values(Register).indexOf(upper as Register) !== -1) {
+      tokens.push({
+        type: TokenType.Register,
+        value: upper,
+      });
+
+      current++;
       continue;
     }
 
@@ -129,30 +160,6 @@ export function Tokenizer(input: string) {
       });
 
       current++;
-      continue;
-    }
-
-    // Handle Label and Argument
-    if (/[a-zA-Z_]/.test(char)) {
-      let value = "";
-      while (current < input.length && /[a-zA-Z0-9_]/.test(input[current])) {
-        value += input[current];
-        current++;
-      }
-
-      if (input[current] === ":") {
-        tokens.push({
-          type: TokenType.Label,
-          value,
-        });
-        current++;
-      } else {
-        tokens.push({
-          type: TokenType.Arugment,
-          value,
-        });
-      }
-
       continue;
     }
 
