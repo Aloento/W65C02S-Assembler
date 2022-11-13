@@ -1,5 +1,5 @@
-import { OpCode } from "./OpCode";
-import { AST } from "./Parser";
+import { OpCode } from "../OpCode";
+import { AST } from "../Parser";
 
 export function TransformNon(node: AST, call: AST) {
   switch (node.name) {

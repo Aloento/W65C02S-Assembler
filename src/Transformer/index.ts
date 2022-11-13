@@ -1,8 +1,8 @@
-import { AST, ASTType } from "./Parser";
-import { TransformNon } from "./TransformNon";
-import { TransformOne } from "./TransformOne";
-import { TransformTwo } from "./TransformTwo";
-import { Traverser } from "./Traverser";
+import { AST, ASTType } from "../Parser";
+import { Traverser } from "../Traverser";
+import { TransformNon } from "./Non";
+import { TransformOne } from "./One";
+import { TransformTwo } from "./Two";
 
 /** 
  * Number to LittleEndian HexString

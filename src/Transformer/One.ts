@@ -1,7 +1,7 @@
-import { OpCode } from "./OpCode";
-import { AST, ASTType } from "./Parser";
-import { Register } from "./Register";
-import { To2LE } from "./Transformer";
+import { OpCode } from "../OpCode";
+import { AST, ASTType } from "../Parser";
+import { Register } from "../Register";
+import { To2LE } from ".";
 
 export function TransformOne(node: AST, call: AST) {
   const arg = node.params![0];
