@@ -121,6 +121,7 @@ export function TransformOne(node: AST, call: AST) {
         default:
           throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BCS}`);
       }
+      break;
 
     case OpCode.BCC:
       switch (arg.type) {
