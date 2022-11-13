@@ -26,8 +26,9 @@ export function Transformer(ast: AST) {
   ast.context = newAst.body;
 
   Traverser(ast, {
-    [ASTType.LabelLiteral](node) {
-      newAst.body!.push(node);
+    [ASTType.LabelLiteral](node, parent) {
+      if (!parent)
+        newAst.body!.push(node);
     },
 
     [ASTType.CallExpression](node, parent) {
