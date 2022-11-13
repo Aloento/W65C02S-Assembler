@@ -8,15 +8,16 @@ export interface AST {
   name?: string | OpCode;
   value?: string | number | Register;
   params?: AST[];
+  context?: AST[];
 }
 
 export enum ASTType {
-  Program,
-  CallExpression,
-  RegisterLiteral,
-  NumberLiteral,
-  PointerLiteral,
-  LabelLiteral,
+  Program = "Program",
+  CallExpression = "CallExpression",
+  RegisterLiteral = "RegisterLiteral",
+  NumberLiteral = "NumberLiteral",
+  PointerLiteral = "PointerLiteral",
+  LabelLiteral = "LabelLiteral",
 }
 
 /**
@@ -90,7 +91,7 @@ export function Parser(tokens: Token[]) {
       return node;
     }
 
-    throw new TypeError(`Unexpected token ${TokenType[token.type]} : ${token.value} at ${current}`);
+    throw new TypeError(`Unexpected token ${token.type} : ${token.value} at ${current}`);
   }
 
   // Root node

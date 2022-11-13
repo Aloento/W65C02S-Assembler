@@ -10,23 +10,23 @@ export enum TokenType {
   /**
    * X, Y, A ...
    */
-  Register,
+  Register = "Register",
   /**
    * MOV, ADD ...
    */
-  OpCode,
+  OpCode = "OpCode",
   /**
    * Kind of 0xFF
    */
-  Number,
+  Number = "Number",
   /**
    * Kind of [0x1234]
    */
-  Pointer,
+  Pointer = "Pointer",
   /**
    * any_string1: EOF
    */
-  Label,
+  Label = "Label",
 }
 
 function isNewLine(token: string): boolean {
@@ -136,9 +136,13 @@ export function Tokenizer(input: string) {
         current++;
       }
 
+      const num = parseInt(value, 16);
+      if (num > 255)
+        throw new TypeError(`Number value ${num} is too large for 8-bit at ${current}`);
+
       tokens.push({
         type: TokenType.Number,
-        value: parseInt(value, 16),
+        value: num,
       });
 
       continue;
@@ -154,9 +158,13 @@ export function Tokenizer(input: string) {
         current++;
       }
 
+      const num = parseInt(value, 16);
+      if (num > 65535)
+        throw new TypeError(`Pointer value ${num} is too large for 16-bit at ${current}`);
+
       tokens.push({
         type: TokenType.Pointer,
-        value: parseInt(value, 16),
+        value: num,
       });
 
       current++;

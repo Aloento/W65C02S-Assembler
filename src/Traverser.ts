@@ -1,8 +1,6 @@
 import { AST, ASTType } from "./Parser";
 
-export type Visitor = {
-  [key in ASTType]?: (node: AST, parent?: AST) => void;
-};
+export type Visitor = Partial<Record<ASTType, (node: AST, parent?: AST) => void>>;
 
 /**
  * 遍历器
