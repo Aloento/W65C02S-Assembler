@@ -38,6 +38,7 @@ export function TransformOne(node: AST, call: AST) {
 
             case Register.IndexY:
               call.value = "C8";
+              break;
 
             default:
               throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.INC}`);
