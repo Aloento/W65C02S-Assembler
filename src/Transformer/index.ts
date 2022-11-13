@@ -27,7 +27,7 @@ export function Transformer(ast: AST) {
 
   Traverser(ast, {
     [ASTType.LabelLiteral](node, parent) {
-      if (!parent)
+      if (parent?.type === ASTType.Program) 
         newAst.body!.push(node);
     },
 
