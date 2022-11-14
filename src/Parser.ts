@@ -67,6 +67,16 @@ export function Parser(tokens: Token[]) {
 
       return {
         type: ASTType.LabelLiteral,
+        value: token.value as string,
+      };
+    }
+
+    // Handle LabelDef
+    if (token.type === TokenType.LabelDef) {
+      current++;
+
+      return {
+        type: ASTType.LabelLiteral,
         name: token.value as string,
       };
     }
@@ -82,8 +92,8 @@ export function Parser(tokens: Token[]) {
 
       token = tokens[++current];
 
-      // Handle params stop until next OpCode
-      while (current < tokens.length && token.type !== TokenType.OpCode) {
+      // Handle params stop until next OpCode or LabelDef
+      while (current < tokens.length && token.type !== TokenType.OpCode && token.type !== TokenType.LabelDef) {
         node.params!.push(walk());
         token = tokens[current];
       }

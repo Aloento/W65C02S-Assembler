@@ -1,7 +1,7 @@
 import { OpCode } from "../OpCode";
 import { AST, ASTType } from "../Parser";
 import { Register } from "../Register";
-import { To2LE } from ".";
+import { ToHexAST } from ".";
 import { TransformMOV } from "./MOV";
 
 export function TransformTwo(node: AST, call: AST) {
@@ -59,7 +59,7 @@ function TransformCMP(arg1: AST, arg2: AST, call: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "CD";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -76,7 +76,7 @@ function TransformCMP(arg1: AST, arg2: AST, call: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "EC";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -93,7 +93,7 @@ function TransformCMP(arg1: AST, arg2: AST, call: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "CC";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -124,7 +124,7 @@ function TransformEOR(call: AST, arg1: AST, arg2: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "4D";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -155,7 +155,7 @@ function TransformORA(call: AST, arg1: AST, arg2: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "0D";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -186,7 +186,7 @@ function TransformAND(call: AST, arg1: AST, arg2: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "2D";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -217,7 +217,7 @@ function TransformSBC(call: AST, arg1: AST, arg2: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "ED";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -248,7 +248,7 @@ function TransformADC(call: AST, arg1: AST, arg2: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "6D";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:

@@ -1,7 +1,7 @@
 import { OpCode } from "../OpCode";
 import { AST, ASTType } from "../Parser";
 import { Register } from "../Register";
-import { To2LE } from ".";
+import { ToHexAST } from ".";
 
 export function TransformOne(node: AST, call: AST) {
   const arg = node.params![0];
@@ -16,7 +16,7 @@ export function TransformOne(node: AST, call: AST) {
           break;
 
         case ASTType.PointerLiteral:
-          call.params = To2LE(arg.value as number);
+          call.params = ToHexAST(arg.value as number);
           break;
 
         default:
@@ -47,7 +47,7 @@ export function TransformOne(node: AST, call: AST) {
 
         case ASTType.PointerLiteral:
           call.value = "EE";
-          call.params = To2LE(arg.value as number);
+          call.params = ToHexAST(arg.value as number);
           break;
 
         default:
@@ -79,7 +79,7 @@ export function TransformOne(node: AST, call: AST) {
 
         case ASTType.PointerLiteral:
           call.value = "CE";
-          call.params = To2LE(arg.value as number);
+          call.params = ToHexAST(arg.value as number);
           break;
 
         default:

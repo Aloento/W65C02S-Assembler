@@ -6,6 +6,7 @@ import { Tokenizer } from "./Tokenizer";
 import { Parser } from "./Parser";
 import { TestASM } from "./TestASM";
 import { Transformer } from "./Transformer";
+import { Generator } from "./Generator";
 
 function App() {
   // @ts-expect-error
@@ -16,6 +17,8 @@ function App() {
   window.Parser = Parser;
   // @ts-expect-error
   window.Transformer = Transformer;
+  // @ts-expect-error
+  window.Generator = Generator;
 
   const t = Tokenizer(TestASM);
   console.log(t);
@@ -26,9 +29,12 @@ function App() {
   const newer = Transformer(ast);
   console.log(newer);
 
+  const code = Generator(newer);
+  console.log(code);
+
   return (
     <div>
-      <img src={preactLogo} alt="Preact Logo" />
+      <img src={preactLogo} />
     </div>
   );
 }

@@ -27,6 +27,10 @@ export enum TokenType {
    * any_string1: EOF
    */
   Label = "Label",
+  /**
+   * Define new label
+   */
+  LabelDef = "LabelDef",
 }
 
 function isNewLine(token: string): boolean {
@@ -76,7 +80,7 @@ export function Tokenizer(input: string) {
 
       if (input[i] === ":") {
         tokens.push({
-          type: TokenType.Label,
+          type: TokenType.LabelDef,
           value,
         });
 

@@ -4,12 +4,16 @@ import { TransformNon } from "./Non";
 import { TransformOne } from "./One";
 import { TransformTwo } from "./Two";
 
+export function To16LE(num: number): string[] {
+  const hex = num.toString(16).padStart(4, "0");
+  return [hex.slice(2, 4), hex.slice(0, 2)];
+}
+
 /**
  * Number to LittleEndian HexString
  */
-export function To2LE(num: number): AST[] {
-  const hex = num.toString(16);
-  return [hex.slice(2, 4), hex.slice(0, 2)].map((x) => ({
+export function ToHexAST(num: number): AST[] {
+  return To16LE(num).map((x) => ({
     type: ASTType.NumberLiteral,
     value: x,
   }));
@@ -27,7 +31,7 @@ export function Transformer(ast: AST) {
 
   Traverser(ast, {
     [ASTType.LabelLiteral](node, parent) {
-      if (parent?.type === ASTType.Program) 
+      if (parent?.type === ASTType.Program)
         newAst.body!.push(node);
     },
 

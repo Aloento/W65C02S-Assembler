@@ -1,12 +1,4 @@
 export const TestASM = `
-start:
-jmp start
-mov a, 0x11
-mov [0x3000], x
-mov y, 0x21
-inc x
-addc a, 0x02
-
 ;loading something into a register:
 mov a, 0x55
 mov a, [ 0x1234 ]
@@ -54,4 +46,12 @@ cmp y, [ 0x1234 ]
 bzs 0x55
 bzc 0x55
 bcs 0x55
+
+start:
+jmp start
+mov a, 0x11
+mov [0x3000], x
+mov y, 0x21
+inc x
+addc a, 0x02
 `

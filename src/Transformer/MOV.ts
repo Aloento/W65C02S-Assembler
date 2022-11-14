@@ -1,7 +1,7 @@
 import { OpCode } from "../OpCode";
 import { AST, ASTType } from "../Parser";
 import { Register } from "../Register";
-import { To2LE } from ".";
+import { ToHexAST } from ".";
 
 export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
   switch (arg1.type) {
@@ -42,7 +42,7 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "AD";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -61,7 +61,7 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "AE";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -80,7 +80,7 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
 
             case ASTType.PointerLiteral:
               call.value = "AC";
-              call.params = To2LE(arg2.value as number);
+              call.params = ToHexAST(arg2.value as number);
               break;
 
             default:
@@ -96,7 +96,7 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
     case ASTType.PointerLiteral:
       switch (arg2.type) {
         case ASTType.RegisterLiteral:
-          call.params = To2LE(arg1.value as number);
+          call.params = ToHexAST(arg1.value as number);
 
           switch (arg2.value) {
             case Register.Accumulator:

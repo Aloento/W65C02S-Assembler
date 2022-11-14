@@ -1,8 +1,13 @@
 {
-  "name": "w65c02s",
+  "name": "w65c02s-assmbler",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "author": {
+    "name": "Aloento",
+    "email": "Aloento@Q-Audio.org"
+  },
+  "license": "LGPL-3.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
