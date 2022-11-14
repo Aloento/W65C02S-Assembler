@@ -25,7 +25,7 @@ export function Generator(node: AST): string {
 
     case ASTType.NumberLiteral:
       current++;
-      return node.value!.toString(16);
+      return node.value!.toString(16).padStart(2, "0");
 
     default:
       throw new Error(`Unknown AST type: ${node.type}`);
