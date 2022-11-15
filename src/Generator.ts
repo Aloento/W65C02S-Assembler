@@ -8,9 +8,15 @@ const labels = new Map<string, number>();
  * HEX Code Generator
  */
 export function Generator(node: AST): string {
+  current = 0;
+  labels.clear();
+  return generator(node);
+}
+
+function generator(node: AST): string {
   switch (node.type) {
     case ASTType.Program:
-      return node.body!.map(Generator).join("\n");
+      return node.body!.map(generator).join("\n");
 
     case ASTType.LabelLiteral:
       if (node.name) {
@@ -21,7 +27,7 @@ export function Generator(node: AST): string {
 
     case ASTType.CallExpression:
       current++;
-      return `${node.value} ${node.params!.map(Generator).join(" ")}`;
+      return `${node.value} ${node.params!.map(generator).join(" ")}`;
 
     case ASTType.NumberLiteral:
       current++;

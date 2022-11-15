@@ -30,7 +30,6 @@ function App() {
   console.log(ast);
 
   const newer = Transformer(ast);
-  console.log(newer);
 
   const code = Generator(newer);
   console.log(code);
