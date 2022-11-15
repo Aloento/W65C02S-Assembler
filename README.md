@@ -13,7 +13,7 @@ And you can also try to assemble your own ASM.
 For example:
 
 ```js
-const t = Tokenizer(`
+console.log(Assembler(`
 start:
 jmp start
 mov a, 0x11
@@ -21,9 +21,5 @@ mov [0x3000], x
 mov y, 0x21
 inc x
 addc a, 0x02
-`);
-
-const ast = Parser(t);
-const newAST = Transformer(ast);
-Generator(newAST);
+`));
 ```

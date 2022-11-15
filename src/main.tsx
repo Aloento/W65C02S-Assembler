@@ -7,6 +7,7 @@ import { Parser } from "./Parser";
 import { TestASM } from "./TestASM";
 import { Transformer } from "./Transformer";
 import { Generator } from "./Generator";
+import { Assembler } from "./Assembler";
 
 function App() {
   // @ts-expect-error
@@ -19,6 +20,8 @@ function App() {
   window.Transformer = Transformer;
   // @ts-expect-error
   window.Generator = Generator;
+  // @ts-expect-error
+  window.Assembler = Assembler;
 
   const t = Tokenizer(TestASM);
   console.log(t);
