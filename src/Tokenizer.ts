@@ -41,7 +41,7 @@ function isNewLine(token: string): boolean {
  * 词法分析器
  * 我们接受 ASM 字符串，然后把它们分割成 Token 数组
  */
-export function Tokenizer(input: string) {
+export function Tokenizer(input: string): Token[] {
   // Index of current character in input string
   let current = 0;
 
@@ -131,52 +131,52 @@ export function Tokenizer(input: string) {
     }
 
     const pref = char + input[current + 1].toLowerCase();
-    // Handle HexNumber 0xFf
-    if (pref === "0x") {
-      let value = "";
-      current += 2;
+    switch (pref) {
+      // Handle BinaryNumber 0b1010
+      case "0b":
+        let test = /[01]/;
+        let base = 2;
+      // Handle HexNumber 0xFf or 0xFFff
+      case "0x":
+        test ??= /[0-9A-Fa-f]/;
+        base ??= 16;
 
-      while (current < input.length && /[0-9A-Fa-f]/.test(input[current])) {
-        value += input[current];
-        current++;
-      }
+        let value = "";
+        current += 2;
 
-      const num = parseInt(value, 16);
-      if (num > 255)
-        throw new TypeError(`Number value ${num} is too large for 8-bit at ${current}`);
+        while (current < input.length && test.test(input[current])) {
+          value += input[current];
+          current++;
+        }
 
-      tokens.push({
-        type: TokenType.Number,
-        value: num,
-      });
+        const num = parseInt(value, base);
 
-      continue;
+        if (num <= 255)
+          tokens.push({
+            type: TokenType.Number,
+            value: num,
+          });
+        else if (num <= 65535)
+          tokens.push({
+            type: TokenType.Pointer,
+            value: num,
+          });
+        else
+          throw new Error(`Number Too Large ${num} raw ${value} at ${current}`);
+
+        continue;
     }
 
-    // Handle BinaryNumber 0b1010
-    if (pref === "0b") {
-      let value = "";
-      current += 2;
-
-      while (current < input.length && /[01]/.test(input[current])) {
-        value += input[current];
-        current++;
-      }
-
-      const num = parseInt(value, 2);
-      if (num > 255)
-        throw new TypeError(`Number value ${num} is too large for 8-bit at ${current}`);
-
-      tokens.push({
-        type: TokenType.Number,
-        value: num,
-      });
-
-      continue;
-    }
-
-    // Handle Pointer [ 0x1234 ]
+    // Handle [ ]
     if (char === "[") {
+      // Handle Pointer [ 0x1234 ]
+      let next = "";
+      let i = current + 1;
+      while (i < input.length && input[i] !== "]") {
+        next += input[i];
+        i++;
+      }
+
       let value = "";
       current++;
 
