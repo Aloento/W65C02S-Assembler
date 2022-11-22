@@ -130,8 +130,9 @@ export function Tokenizer(input: string) {
       continue;
     }
 
+    const pref = char + input[current + 1].toLowerCase();
     // Handle HexNumber 0xFF
-    if (char + input[current + 1].toLowerCase() === "0x") {
+    if (pref === "0x") {
       let value = "";
       current += 2;
 
@@ -141,6 +142,28 @@ export function Tokenizer(input: string) {
       }
 
       const num = parseInt(value, 16);
+      if (num > 255)
+        throw new TypeError(`Number value ${num} is too large for 8-bit at ${current}`);
+
+      tokens.push({
+        type: TokenType.Number,
+        value: num,
+      });
+
+      continue;
+    }
+
+    // Handle BinaryNumber 0b1010
+    if (pref === "0b") {
+      let value = "";
+      current += 2;
+
+      while (current < input.length && /[01]/.test(input[current])) {
+        value += input[current];
+        current++;
+      }
+
+      const num = parseInt(value, 2);
       if (num > 255)
         throw new TypeError(`Number value ${num} is too large for 8-bit at ${current}`);
 
