@@ -75,6 +75,18 @@ export function Reg2Reg(arg1: AST, arg2: AST, call: AST) {
 
     case Register.ZeroPage:
       switch (arg2.name) {
+        case Register.Accumulator:
+          call.name = OpCode.STA;
+          if (arg1.value === Register.IndexY)
+            call.value = "91";
+          else
+            call.value = "92";
+
+          call.params = arg1.params;
+          break;
+
+        default:
+          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
       }
 
     default:
