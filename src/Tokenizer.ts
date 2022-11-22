@@ -54,10 +54,16 @@ export function Tokenizer(input: string): [Token[], number] {
   while (current < input.length) {
     const char = input[current];
 
-    // Skip whitespace and comma and new line
-    if (char === " " || char === "\t" || char === "," || isNewLine(char)) {
-      current++;
-      continue;
+    // Skip
+    switch (char) {
+      case " ":
+      case ",":
+      case "+":
+      case "\t":
+      case "\r":
+      case "\n":
+        current++;
+        continue;
     }
 
     // Skip comments
