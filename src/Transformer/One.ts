@@ -8,133 +8,162 @@ export function TransformOne(node: AST, call: AST) {
 
   switch (node.name) {
     case OpCode.JMP:
-      call.value = "4C";
-
-      switch (arg.type) {
-        case ASTType.LabelLiteral:
-          call.params = [arg];
-          break;
-
-        case ASTType.PointerLiteral:
-          call.params = ToHexAST(arg.value as number);
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.JMP}`);
-      }
+      TransformJMP(call, arg);
       break;
 
     case OpCode.INC:
-      switch (arg.type) {
-        case ASTType.RegisterLiteral:
-          switch (arg.name) {
-            case Register.Accumulator:
-              call.value = "1A";
-              break;
-
-            case Register.IndexX:
-              call.value = "E8";
-              break;
-
-            case Register.IndexY:
-              call.value = "C8";
-              break;
-
-            default:
-              throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.INC}`);
-          }
-          break;
-
-        case ASTType.PointerLiteral:
-          call.value = "EE";
-          call.params = ToHexAST(arg.value as number);
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.INC}`);
-      }
+      TransformINC(arg, call);
       break;
 
     case OpCode.DEC:
-      switch (arg.type) {
-        case ASTType.RegisterLiteral:
-          switch (arg.name) {
-            case Register.Accumulator:
-              call.value = "3A";
-              break;
-
-            case Register.IndexX:
-              call.value = "CA";
-              break;
-
-            case Register.IndexY:
-              call.value = "88";
-              break;
-
-            default:
-              throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.DEC}`);
-          }
-
-          break;
-
-        case ASTType.PointerLiteral:
-          call.value = "CE";
-          call.params = ToHexAST(arg.value as number);
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.DEC}`);
-      }
+      TransformDEC(arg, call);
       break;
 
     case OpCode.BZS:
-      switch (arg.type) {
-        case ASTType.NumberLiteral:
-          call.value = "F0";
-          call.params = [arg];
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BZS}`);
-      }
+      TransformBZS(arg, call);
       break;
 
     case OpCode.BZC:
-      switch (arg.type) {
-        case ASTType.NumberLiteral:
-          call.value = "D0";
-          call.params = [arg];
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BZC}`);
-      }
+      TransformBZC(arg, call);
       break;
 
     case OpCode.BCS:
-      switch (arg.type) {
-        case ASTType.NumberLiteral:
-          call.value = "B0";
-          call.params = [arg];
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BCS}`);
-      }
+      TransformBCS(arg, call);
       break;
 
     case OpCode.BCC:
-      switch (arg.type) {
-        case ASTType.NumberLiteral:
-          call.value = "90";
-          call.params = [arg];
-          break;
-
-        default:
-          throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BCC}`);
-      }
+      TransformBCC(arg, call);
+      break;
 
     default:
       throw new Error(`UnSupport OpCode: ${node.name} with 1 param`);
+  }
+}
+
+function TransformBCC(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.NumberLiteral:
+      call.value = "90";
+      call.params = [arg];
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BCC}`);
+  }
+}
+
+function TransformBCS(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.NumberLiteral:
+      call.value = "B0";
+      call.params = [arg];
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BCS}`);
+  }
+}
+
+function TransformBZC(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.NumberLiteral:
+      call.value = "D0";
+      call.params = [arg];
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BZC}`);
+  }
+}
+
+function TransformBZS(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.NumberLiteral:
+      call.value = "F0";
+      call.params = [arg];
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.BZS}`);
+  }
+}
+
+function TransformDEC(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.RegisterLiteral:
+      switch (arg.name) {
+        case Register.Accumulator:
+          call.value = "3A";
+          break;
+
+        case Register.IndexX:
+          call.value = "CA";
+          break;
+
+        case Register.IndexY:
+          call.value = "88";
+          break;
+
+        default:
+          throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.DEC}`);
+      }
+
+      break;
+
+    case ASTType.PointerLiteral:
+      call.value = "CE";
+      call.params = ToHexAST(arg.value as number);
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.DEC}`);
+  }
+}
+
+function TransformINC(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.RegisterLiteral:
+      switch (arg.name) {
+        case Register.Accumulator:
+          call.value = "1A";
+          break;
+
+        case Register.IndexX:
+          call.value = "E8";
+          break;
+
+        case Register.IndexY:
+          call.value = "C8";
+          break;
+
+        default:
+          throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.INC}`);
+      }
+      break;
+
+    case ASTType.PointerLiteral:
+      call.value = "EE";
+      call.params = ToHexAST(arg.value as number);
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.INC}`);
+  }
+}
+
+function TransformJMP(call: AST, arg: AST) {
+  call.value = "4C";
+
+  switch (arg.type) {
+    case ASTType.LabelLiteral:
+      call.params = [arg];
+      break;
+
+    case ASTType.PointerLiteral:
+      call.params = ToHexAST(arg.value as number);
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.JMP}`);
   }
 }
