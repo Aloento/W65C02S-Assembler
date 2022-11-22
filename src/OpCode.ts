@@ -1,8 +1,19 @@
 export enum OpCode {
     /**
-     * MOV X, Y
+     * Uncertain
      */
     MOV = "MOV",
+    /**
+     * Uncertain
+     */
+    PUSH = "PUSH",
+    /**
+     * Uncertain
+     */
+    POP = "POP",
+
+    ////////////////////////////////
+
     /**
      * Same as ADC
      */
@@ -27,6 +38,26 @@ export enum OpCode {
      * Same as BNE
      */
     BZC = "BZC",
+    /**
+     * Same as RTS
+     */
+    RET = "RET",
+    /**
+     * Same as RTI
+     */
+    RETI = "RETI",
+    /**
+     * Same as JSR
+     */
+    CALL = "CALL",
+    /**
+     * Same as ROL
+     */
+    ROTL = "ROTL",
+    /**
+     * Same as ROR
+     */
+    ROTR = "ROTR",
 
     ////////////////////////////////
 

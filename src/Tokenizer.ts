@@ -131,7 +131,7 @@ export function Tokenizer(input: string) {
     }
 
     const pref = char + input[current + 1].toLowerCase();
-    // Handle HexNumber 0xFF
+    // Handle HexNumber 0xFf
     if (pref === "0x") {
       let value = "";
       current += 2;
