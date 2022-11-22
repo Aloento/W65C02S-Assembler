@@ -136,18 +136,14 @@ export function Tokenizer(input: string): [Token[], number] {
       continue;
     }
 
-    // Handle DecNumber
-    if (/[0-9]/.test(char)) {
-      putNum(/[0-9]/, 10);
-      continue;
-    }
-
     const pref = char + input[current + 1].toLowerCase();
+    let test: RegExp;
+    let base: 2 | 8 | 16;
     switch (pref) {
       // Handle BinaryNumber 0b1010
       case "0b":
-        let test = /[01]/;
-        let base = 2;
+        test = /[01]/;
+        base = 2;
       // Handle HexNumber 0xFf or 0xFFff
       case "0x":
         test ??= /[0-9A-Fa-f]/;
@@ -169,6 +165,12 @@ export function Tokenizer(input: string): [Token[], number] {
     if (char === "]") {
       current++;
       break;
+    }
+
+    // Handle DecNumber
+    if (/[0-9]/.test(char)) {
+      putNum(/[0-9]/, 10);
+      continue;
     }
 
     throw new TypeError(`Syntax Error: ${char} at ${current}.\n

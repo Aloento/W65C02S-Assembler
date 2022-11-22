@@ -26,7 +26,7 @@ function App() {
   const t = Tokenizer(TestASM);
   console.log(t);
 
-  const ast = Parser(t);
+  const ast = Parser(t[0]);
   console.log(ast);
 
   const newer = Transformer(ast);
