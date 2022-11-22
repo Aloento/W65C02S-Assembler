@@ -8,7 +8,7 @@ export function TransformOne(node: AST, call: AST) {
 
   switch (node.name) {
     case OpCode.JMP:
-      TransformJMP(call, arg);
+      TransformJMP(arg, call);
       break;
 
     case OpCode.INC:
@@ -43,8 +43,24 @@ export function TransformOne(node: AST, call: AST) {
       TransformPOP(arg, call);
       break;
 
+    case OpCode.CALL:
+      TransformCALL(arg, call);
+      break;
+
     default:
       throw new Error(`UnSupport OpCode: ${node.name} with 1 param`);
+  }
+}
+
+function TransformCALL(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.PointerLiteral:
+      call.value = "20";
+      call.params = ToHexAST(arg.value as number);
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.CALL}`);
   }
 }
 
@@ -219,7 +235,7 @@ function TransformINC(arg: AST, call: AST) {
   }
 }
 
-function TransformJMP(call: AST, arg: AST) {
+function TransformJMP(arg: AST, call: AST) {
   call.value = "4C";
 
   switch (arg.type) {
