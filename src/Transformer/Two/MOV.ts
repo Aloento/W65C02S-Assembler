@@ -1,7 +1,7 @@
-import { OpCode } from "../OpCode";
-import { AST, ASTType } from "../Parser";
-import { Register } from "../Register";
-import { ToHexAST } from ".";
+import { OpCode } from "../../OpCode";
+import { AST, ASTType } from "../../Parser";
+import { Register } from "../../Register";
+import { ToHexAST } from "..";
 
 export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
   switch (arg1.type) {
