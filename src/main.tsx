@@ -23,16 +23,16 @@ function App() {
   // @ts-expect-error
   window.Assembler = Assembler;
 
-  const t = Tokenizer(TestASM);
+  const t = Tokenizer("addc a, [ zp[42] + y ]");
   console.log(t);
 
   const ast = Parser(t[0]);
   console.log(ast);
 
-  const newer = Transformer(ast);
+  // const newer = Transformer(ast);
 
-  const code = Generator(newer);
-  console.log(code);
+  // const code = Generator(newer);
+  // console.log(code);
 
   return (
     <div>

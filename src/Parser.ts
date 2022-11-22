@@ -41,16 +41,6 @@ export function Parser(tokens: Token[]) {
       };
     }
 
-    // Handle RegisterLiteral
-    if (token.type === TokenType.Register) {
-      current++;
-
-      return {
-        type: ASTType.RegisterLiteral,
-        name: token.value as Register,
-      };
-    }
-
     // Handle PointerLiteral
     if (token.type === TokenType.Pointer) {
       current++;
@@ -79,6 +69,43 @@ export function Parser(tokens: Token[]) {
         type: ASTType.LabelLiteral,
         name: token.value as string,
       };
+    }
+
+    // Handle RegisterLiteral
+    if (token.type === TokenType.Register) {
+      current++;
+      const node: AST = {
+        type: ASTType.RegisterLiteral,
+        name: token.value as Register,
+        params: [],
+      }
+
+      switch (node.name) {
+        case Register.ZeroPage:
+          let next = walk();
+          if (next.type !== ASTType.NumberLiteral)
+            throw new Error(`ZeroPage must be followed by a number literal, but got ${next.type}`);
+          node.params!.push(next);
+
+          next = walk();
+          if (next.type === ASTType.RegisterLiteral && next.name === Register.IndexY)
+            node.value = Register.IndexY;
+          else
+            current--;
+
+          break;
+
+        case Register.DataByte:
+          token = tokens[current];
+          // Handle params stop until not a number
+          while (current < tokens.length && token.type === TokenType.Number) {
+            node.params!.push(walk());
+            token = tokens[current];
+          }
+          break;
+      }
+
+      return node;
     }
 
     // Handle CallExpression
