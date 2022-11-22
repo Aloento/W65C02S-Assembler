@@ -23,8 +23,15 @@ export enum Register {
      * 状态寄存器 Status Register
      */
     StatusRegister = "SR",
+
+    ////////// 以下为伪寄存器 //////////
+
     /**
-     * 零页寻址 不是寄存器但是我们仍然把它放在这里 Zero Page
+     * 零页寻址 Zero Page
      */
     ZeroPage = "ZP",
+    /**
+     * 原始数据 Data Bytes
+     */
+    DataByte = "DB",
 }

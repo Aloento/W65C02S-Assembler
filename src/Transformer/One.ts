@@ -27,7 +27,7 @@ export function TransformOne(node: AST, call: AST) {
     case OpCode.INC:
       switch (arg.type) {
         case ASTType.RegisterLiteral:
-          switch (arg.value) {
+          switch (arg.name) {
             case Register.Accumulator:
               call.value = "1A";
               break;
@@ -58,7 +58,7 @@ export function TransformOne(node: AST, call: AST) {
     case OpCode.DEC:
       switch (arg.type) {
         case ASTType.RegisterLiteral:
-          switch (arg.value) {
+          switch (arg.name) {
             case Register.Accumulator:
               call.value = "3A";
               break;

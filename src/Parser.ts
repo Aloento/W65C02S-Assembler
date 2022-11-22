@@ -47,7 +47,7 @@ export function Parser(tokens: Token[]) {
 
       return {
         type: ASTType.RegisterLiteral,
-        value: token.value as Register,
+        name: token.value as Register,
       };
     }
 

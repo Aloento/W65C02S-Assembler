@@ -49,7 +49,7 @@ export function TransformTwo(node: AST, call: AST) {
 function TransformCMP(arg1: AST, arg2: AST, call: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           switch (arg2.type) {
             case ASTType.NumberLiteral:
@@ -114,7 +114,7 @@ function TransformCMP(arg1: AST, arg2: AST, call: AST) {
 function TransformEOR(call: AST, arg1: AST, arg2: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           switch (arg2.type) {
             case ASTType.NumberLiteral:
@@ -145,7 +145,7 @@ function TransformEOR(call: AST, arg1: AST, arg2: AST) {
 function TransformORA(call: AST, arg1: AST, arg2: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           switch (arg2.type) {
             case ASTType.NumberLiteral:
@@ -176,7 +176,7 @@ function TransformORA(call: AST, arg1: AST, arg2: AST) {
 function TransformAND(call: AST, arg1: AST, arg2: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           switch (arg2.type) {
             case ASTType.NumberLiteral:
@@ -207,7 +207,7 @@ function TransformAND(call: AST, arg1: AST, arg2: AST) {
 function TransformSBC(call: AST, arg1: AST, arg2: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           switch (arg2.type) {
             case ASTType.NumberLiteral:
@@ -238,7 +238,7 @@ function TransformSBC(call: AST, arg1: AST, arg2: AST) {
 function TransformADC(call: AST, arg1: AST, arg2: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           switch (arg2.type) {
             case ASTType.NumberLiteral:

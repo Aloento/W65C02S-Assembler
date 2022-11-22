@@ -7,22 +7,22 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
   switch (arg1.type) {
     case ASTType.RegisterLiteral:
       if (arg2.type === ASTType.RegisterLiteral) {
-        if (arg1.value === Register.Accumulator && arg2.value === Register.IndexX) {
+        if (arg1.name === Register.Accumulator && arg2.name === Register.IndexX) {
           call.name = OpCode.TXA;
           call.value = "8A";
         }
 
-        if (arg1.value === Register.Accumulator && arg2.value === Register.IndexY) {
+        if (arg1.name === Register.Accumulator && arg2.name === Register.IndexY) {
           call.name = OpCode.TYA;
           call.value = "98";
         }
 
-        if (arg1.value === Register.IndexX && arg2.value === Register.Accumulator) {
+        if (arg1.name === Register.IndexX && arg2.name === Register.Accumulator) {
           call.name = OpCode.TAX;
           call.value = "AA";
         }
 
-        if (arg1.value === Register.IndexY && arg2.value === Register.Accumulator) {
+        if (arg1.name === Register.IndexY && arg2.name === Register.Accumulator) {
           call.name = OpCode.TAY;
           call.value = "A8";
         }
@@ -30,7 +30,7 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
         break;
       }
 
-      switch (arg1.value) {
+      switch (arg1.name) {
         case Register.Accumulator:
           call.name = OpCode.LDA;
 
@@ -98,7 +98,7 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
         case ASTType.RegisterLiteral:
           call.params = ToHexAST(arg1.value as number);
 
-          switch (arg2.value) {
+          switch (arg2.name) {
             case Register.Accumulator:
               call.name = OpCode.STA;
               call.value = "8D";
