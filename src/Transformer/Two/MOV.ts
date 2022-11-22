@@ -122,6 +122,17 @@ function handleReg2Reg(arg1: AST, arg2: AST, call: AST) {
         case Register.IndexY:
           call.name = OpCode.TYA;
           call.value = "98";
+          break;
+
+        case Register.ZeroPage:
+          call.name = OpCode.LDA;
+          if (arg2.value === Register.IndexY)
+            call.value = "B1";
+          else
+            call.value = "B2";
+
+          call.params = arg2.params;
+          break;
 
         default:
           throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
