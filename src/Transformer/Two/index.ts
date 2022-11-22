@@ -1,12 +1,12 @@
 import { OpCode } from "../../OpCode";
 import { AST } from "../../Parser";
-import { TransformMOV } from "./MOV";
+import { TransformADC } from "./ADC";
+import { TransformAND } from "./AND";
 import { TransformCMP } from "./CMP";
 import { TransformEOR } from "./EOR";
+import { TransformMOV } from "./MOV";
 import { TransformORA } from "./ORA";
-import { TransformAND } from "./AND";
 import { TransformSBC } from "./SBC";
-import { TransformADC } from "./ADC";
 
 export function TransformTwo(node: AST, call: AST) {
   const arg1 = node.params![0];
