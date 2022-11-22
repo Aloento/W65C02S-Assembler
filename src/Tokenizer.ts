@@ -131,11 +131,11 @@ export function Tokenizer(input: string) {
     }
 
     // Handle HexNumber 0xFF
-    if (char + input[current + 1] === "0x") {
+    if (char + input[current + 1].toLowerCase() === "0x") {
       let value = "";
       current += 2;
 
-      while (current < input.length && /[0-9A-F]/.test(input[current])) {
+      while (current < input.length && /[0-9A-Fa-f]/.test(input[current])) {
         value += input[current];
         current++;
       }
