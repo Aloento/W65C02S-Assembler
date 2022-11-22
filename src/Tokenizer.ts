@@ -125,18 +125,23 @@ export function Tokenizer(input: string): [Token[], number] {
     }
 
     // Handle Register
-    const upper = char.toUpperCase();
-    if (Object.values(Register).indexOf(upper as Register) !== -1) {
+    const reg = [
+      char,
+      input.slice(current, current + 2),
+    ].map(x => x.toUpperCase()).find(reg =>
+      Object.values(Register).indexOf(reg as Register) !== -1);
+
+    if (reg) {
       tokens.push({
         type: TokenType.Register,
-        value: upper,
+        value: reg,
       });
 
-      current++;
+      current += reg.length;
       continue;
     }
 
-    const pref = char + input[current + 1].toLowerCase();
+    const pref = char + input.at(current + 1)?.toLowerCase();
     let test: RegExp;
     let base: 2 | 8 | 16;
     switch (pref) {
