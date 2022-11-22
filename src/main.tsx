@@ -23,7 +23,7 @@ function App() {
   // @ts-expect-error
   window.Assembler = Assembler;
 
-  const t = Tokenizer("addc a, [ zp[42] + y ]");
+  const t = Tokenizer("hellostring: db 72, 101, 108, 108, 111, 0");
   console.log(t);
 
   const ast = Parser(t[0]);

@@ -14,18 +14,18 @@ export enum Register {
     /**
      * 栈指针 Stack Pointer
      */
-    StackPointer = "SP",
+    StackPointer = "S",
     /**
      * 指令计数器 Program Counter
      */
-    ProgramCounter = "PC",
-    /**
-     * 状态寄存器 Status Register
-     */
-    StatusRegister = "SR",
+    ProgramCounter = "R",
 
     ////////// 以下为伪寄存器 //////////
 
+    /**
+     * 状态寄存器 Status Register
+     */
+    StatusRegister = "P",
     /**
      * 零页寻址 Zero Page
      */
