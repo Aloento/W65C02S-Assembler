@@ -11,6 +11,10 @@ export enum OpCode {
      * Uncertain
      */
     POP = "POP",
+    /**
+     * RAW Data
+     */
+    DB = "DB",
 
     ////////////////////////////////
 

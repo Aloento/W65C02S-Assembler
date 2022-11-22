@@ -30,8 +30,4 @@ export enum Register {
      * 零页寻址 Zero Page
      */
     ZeroPage = "ZP",
-    /**
-     * 原始数据 Data Bytes
-     */
-    DataByte = "DB",
 }

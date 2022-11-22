@@ -94,15 +94,6 @@ export function Parser(tokens: Token[]) {
             current--;
 
           break;
-
-        case Register.DataByte:
-          token = tokens[current];
-          // Handle params stop until not a number
-          while (current < tokens.length && token.type === TokenType.Number) {
-            node.params!.push(walk());
-            token = tokens[current];
-          }
-          break;
       }
 
       return node;

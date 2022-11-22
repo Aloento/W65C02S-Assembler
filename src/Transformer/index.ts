@@ -1,3 +1,4 @@
+import { OpCode } from "../OpCode";
 import { AST, ASTType } from "../Parser";
 import { Traverser } from "../Traverser";
 import { TransformNon } from "./Non";
@@ -42,25 +43,28 @@ export function Transformer(ast: AST) {
         params: [],
       };
 
-      switch (node.params?.length) {
-        case 1:
-          TransformOne(node, call);
-          break;
+      if (call.name === OpCode.DB)
+        call.params = node.params;
+      else
+        switch (node.params?.length) {
+          case 1:
+            TransformOne(node, call);
+            break;
 
-        case 2:
-          TransformTwo(node, call);
-          break;
+          case 2:
+            TransformTwo(node, call);
+            break;
 
-        case 0:
-        case undefined:
-          TransformNon(node, call);
-          break;
+          case 0:
+          case undefined:
+            TransformNon(node, call);
+            break;
 
-        default:
-          throw new Error(
-            `Params length out of range: ${node.params?.length} for opcode: ${node.name}`
-          );
-      }
+          default:
+            throw new Error(
+              `Params length out of range: ${node.params?.length} for opcode: ${node.name}`
+            );
+        }
 
       parent!.context!.push(call);
     },
