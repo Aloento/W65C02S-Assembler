@@ -41,7 +41,7 @@ function isNewLine(token: string): boolean {
  * 词法分析器
  * 我们接受 ASM 字符串，然后把它们分割成 Token 数组
  */
-export function Tokenizer(input: string): Token[] {
+export function Tokenizer(input: string): [Token[], number] {
   // Index of current character in input string
   let current = 0;
 
@@ -130,6 +130,12 @@ export function Tokenizer(input: string): Token[] {
       continue;
     }
 
+    // Handle DecNumber
+    if (/[0-9]/.test(char)) {
+      putNum(/[0-9]/, 10);
+      continue;
+    }
+
     const pref = char + input[current + 1].toLowerCase();
     switch (pref) {
       // Handle BinaryNumber 0b1010
@@ -140,62 +146,23 @@ export function Tokenizer(input: string): Token[] {
       case "0x":
         test ??= /[0-9A-Fa-f]/;
         base ??= 16;
-
-        let value = "";
         current += 2;
 
-        while (current < input.length && test.test(input[current])) {
-          value += input[current];
-          current++;
-        }
-
-        const num = parseInt(value, base);
-
-        if (num <= 255)
-          tokens.push({
-            type: TokenType.Number,
-            value: num,
-          });
-        else if (num <= 65535)
-          tokens.push({
-            type: TokenType.Pointer,
-            value: num,
-          });
-        else
-          throw new Error(`Number Too Large ${num} raw ${value} at ${current}`);
-
+        putNum(test, base);
         continue;
     }
 
-    // Handle [ ]
+    // Handle []
     if (char === "[") {
-      // Handle Pointer [ 0x1234 ]
-      let next = "";
-      let i = current + 1;
-      while (i < input.length && input[i] !== "]") {
-        next += input[i];
-        i++;
-      }
-
-      let value = "";
-      current++;
-
-      while (current < input.length && input[current] !== "]") {
-        value += input[current];
-        current++;
-      }
-
-      const num = parseInt(value, 16);
-      if (num > 65535)
-        throw new TypeError(`Pointer value ${num} is too large for 16-bit at ${current}`);
-
-      tokens.push({
-        type: TokenType.Pointer,
-        value: num,
-      });
-
-      current++;
+      const [nested, passed] = Tokenizer(input.slice(++current));
+      tokens.push(...nested);
+      current += passed;
       continue;
+    }
+
+    if (char === "]") {
+      current++;
+      break;
     }
 
     throw new TypeError(`Syntax Error: ${char} at ${current}.\n
@@ -203,5 +170,29 @@ export function Tokenizer(input: string): Token[] {
     Recent String: ${input.slice(current - 10, current + 10)}`);
   }
 
-  return tokens;
+  return [tokens, current];
+
+  function putNum(test: RegExp, base: number) {
+    let value = "";
+    while (current < input.length && test.test(input[current])) {
+      value += input[current];
+      current++;
+    }
+
+    const num = parseInt(value, base);
+
+    if (num <= 255)
+      tokens.push({
+        type: TokenType.Number,
+        value: num,
+      });
+    else if (num <= 65535)
+      tokens.push({
+        type: TokenType.Pointer,
+        value: num,
+      });
+
+    else
+      throw new Error(`Number Too Large ${num} raw ${value} at ${current}`);
+  }
 }
