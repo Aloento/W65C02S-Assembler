@@ -44,7 +44,18 @@ export function TransformOne(node: AST, call: AST) {
       break;
 
     case OpCode.CALL:
-      TransformCALL(arg, call);
+    case OpCode.JSR:
+      TransformJSR(arg, call);
+      break;
+
+    case OpCode.ROTL:
+    case OpCode.ROL:
+      TransformROL(arg, call);
+      break;
+
+    case OpCode.ROTR:
+    case OpCode.ROR:
+      TransformROR(arg, call);
       break;
 
     default:
@@ -52,7 +63,43 @@ export function TransformOne(node: AST, call: AST) {
   }
 }
 
-function TransformCALL(arg: AST, call: AST) {
+function TransformROR(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.RegisterLiteral:
+      switch (arg.name) {
+        case Register.Accumulator:
+          call.value = "6A";
+          break;
+
+        default:
+          throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.ROR}`);
+      }
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.ROR}`);
+  }
+}
+
+function TransformROL(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.RegisterLiteral:
+      switch (arg.name) {
+        case Register.Accumulator:
+          call.value = "2A";
+          break;
+
+        default:
+          throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.ROL}`);
+      }
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.ROL}`);
+  }
+}
+
+function TransformJSR(arg: AST, call: AST) {
   switch (arg.type) {
     case ASTType.PointerLiteral:
       call.value = "20";
@@ -60,7 +107,7 @@ function TransformCALL(arg: AST, call: AST) {
       break;
 
     default:
-      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.CALL}`);
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.JSR}`);
   }
 }
 
