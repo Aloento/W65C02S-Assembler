@@ -39,8 +39,42 @@ export function TransformOne(node: AST, call: AST) {
       TransformPUSH(arg, call);
       break;
 
+    case OpCode.POP:
+      TransformPOP(arg, call);
+      break;
+
     default:
       throw new Error(`UnSupport OpCode: ${node.name} with 1 param`);
+  }
+}
+
+function TransformPOP(arg: AST, call: AST) {
+  switch (arg.type) {
+    case ASTType.RegisterLiteral:
+      switch (arg.name) {
+        case Register.Accumulator:
+          call.value = "68";
+          break;
+
+        case Register.IndexX:
+          call.value = "FA";
+          break;
+
+        case Register.IndexY:
+          call.value = "7A";
+          break;
+
+        case Register.StatusRegister:
+          call.value = "28";
+          break;
+
+        default:
+          throw new Error(`UnSupport Register: ${arg.value} for ${OpCode.POP}`);
+      }
+      break;
+
+    default:
+      throw new Error(`Unexpected param type: ${arg.type} for ${OpCode.POP}`);
   }
 }
 
@@ -61,7 +95,7 @@ function TransformPUSH(arg: AST, call: AST) {
           break;
 
         case Register.StatusRegister:
-          call.value = "28";
+          call.value = "08";
           break;
 
         default:
