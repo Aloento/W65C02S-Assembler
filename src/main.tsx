@@ -1,13 +1,13 @@
 import { render } from "preact";
-import "./index.css";
-import preactLogo from "./assets/preact.svg";
 import "./app.css";
-import { Tokenizer } from "./Tokenizer";
+import { Assembler } from "./Assembler";
+import preactLogo from "./assets/preact.svg";
+import { Generator } from "./Generator";
+import "./index.css";
 import { Parser } from "./Parser";
 import { TestASM } from "./TestASM";
+import { Tokenizer } from "./Tokenizer";
 import { Transformer } from "./Transformer";
-import { Generator } from "./Generator";
-import { Assembler } from "./Assembler";
 
 function App() {
   // @ts-expect-error
@@ -23,16 +23,16 @@ function App() {
   // @ts-expect-error
   window.Assembler = Assembler;
 
-  const t = Tokenizer("hellostring: db 72, 101, 108, 108, 111, 0");
+  const t = Tokenizer("hellostring:   db 72, 101, 108, 108, 111, 0");
   console.log(t);
 
   const ast = Parser(t[0]);
   console.log(ast);
 
-  // const newer = Transformer(ast);
+  const newer = Transformer(ast);
 
-  // const code = Generator(newer);
-  // console.log(code);
+  const code = Generator(newer);
+  console.log(code);
 
   return (
     <div>

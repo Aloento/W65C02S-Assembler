@@ -1,3 +1,4 @@
+import { OpCode } from "./OpCode";
 import { AST, ASTType } from "./Parser";
 import { To16LE } from "./Transformer";
 
@@ -26,12 +27,15 @@ function generator(node: AST): string {
         return To16LE(labels.get(node.value as string) as number).join(" ");
 
     case ASTType.CallExpression:
+      if (node.name === OpCode.DB)
+        return node.params!.map(generator).join(" ");
+
       current++;
       return `${node.value} ${node.params!.map(generator).join(" ")}`;
 
     case ASTType.NumberLiteral:
       current++;
-      return node.value!.toString(16).padStart(2, "0");
+      return node.value!.toString(16).padStart(2, "0").toUpperCase();
 
     default:
       throw new Error(`Unknown AST type: ${node.type}`);
