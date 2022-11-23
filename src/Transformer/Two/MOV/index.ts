@@ -1,4 +1,3 @@
-import { OpCode } from "../../../OpCode";
 import { AST, ASTType } from "../../../Parser";
 import { PointerLeft } from "./PointerLeft";
 import { Reg2Reg } from "./Reg2Reg";
@@ -20,6 +19,6 @@ export function TransformMOV(arg1: AST, arg2: AST, call: AST) {
       break;
 
     default:
-      throw new Error(`Unexpected Left param type: ${arg1.type} for ${OpCode.MOV}`);
+      throw new Error(`Unexpected Left param type: ${arg1.type} for ${call.name}`);
   }
 }

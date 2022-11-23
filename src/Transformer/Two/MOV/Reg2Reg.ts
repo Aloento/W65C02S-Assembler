@@ -28,7 +28,7 @@ export function Reg2Reg(arg1: AST, arg2: AST, call: AST) {
           break;
 
         default:
-          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
+          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${call.name}`);
       }
       break;
 
@@ -45,7 +45,7 @@ export function Reg2Reg(arg1: AST, arg2: AST, call: AST) {
           break;
 
         default:
-          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
+          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${call.name}`);
       }
       break;
 
@@ -57,7 +57,7 @@ export function Reg2Reg(arg1: AST, arg2: AST, call: AST) {
           break;
 
         default:
-          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
+          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${call.name}`);
       }
       break;
 
@@ -69,7 +69,7 @@ export function Reg2Reg(arg1: AST, arg2: AST, call: AST) {
           break;
 
         default:
-          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
+          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${call.name}`);
       }
       break;
 
@@ -86,11 +86,11 @@ export function Reg2Reg(arg1: AST, arg2: AST, call: AST) {
           break;
 
         default:
-          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${OpCode.MOV}`);
+          throw new Error(`Unsupport Register Pair: ${arg1.name} : ${arg2.name} for ${call.name}`);
       }
       break;
 
     default:
-      throw new Error(`Unsupport Left Register: ${arg1.name} for ${OpCode.MOV}`);
+      throw new Error(`Unsupport Left Register: ${arg1.name} for ${call.name}`);
   }
 }

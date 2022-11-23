@@ -1,7 +1,6 @@
-import { OpCode } from "../../OpCode";
+import { ToHexAST } from "..";
 import { AST, ASTType } from "../../Parser";
 import { Register } from "../../Register";
-import { ToHexAST } from "..";
 
 export function TransformCMP(arg1: AST, arg2: AST, call: AST) {
   switch (arg1.type) {
@@ -19,8 +18,24 @@ export function TransformCMP(arg1: AST, arg2: AST, call: AST) {
               call.params = ToHexAST(arg2.value as number);
               break;
 
+            case ASTType.RegisterLiteral:
+              switch (arg2.name) {
+                case Register.ZeroPage:
+                  if (arg2.value === Register.IndexY)
+                    call.value = "D1";
+                  else
+                    call.value = "D2";
+
+                  call.params = arg2.params;
+                  break;
+
+                default:
+                  throw new Error(`Unsupport Right Register: ${arg2.name} for ${call.name}`);
+              }
+              break;
+
             default:
-              throw new Error(`UnSupport Right param type: ${arg2.type} for ${OpCode.ADC}`);
+              throw new Error(`Unsupport Right param type: ${arg2.type} for ${call.name}`);
           }
           break;
 
@@ -37,7 +52,7 @@ export function TransformCMP(arg1: AST, arg2: AST, call: AST) {
               break;
 
             default:
-              throw new Error(`UnSupport Right param type: ${arg2.type} for ${OpCode.ADC}`);
+              throw new Error(`Unsupport Right param type: ${arg2.type} for ${call.name}`);
           }
           break;
 
@@ -54,12 +69,12 @@ export function TransformCMP(arg1: AST, arg2: AST, call: AST) {
               break;
 
             default:
-              throw new Error(`UnSupport Right param type: ${arg2.type} for ${OpCode.ADC}`);
+              throw new Error(`Unsupport Right param type: ${arg2.type} for ${call.name}`);
           }
           break;
 
         default:
-          throw new Error(`UnSupport Left Register: ${arg1.value} for ${call.name}`);
+          throw new Error(`Unsupport Left Register: ${arg1.name} for ${call.name}`);
       }
       break;
 

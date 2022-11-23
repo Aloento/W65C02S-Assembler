@@ -25,11 +25,11 @@ export function PointerLeft(arg1: AST, arg2: AST, call: AST) {
           break;
 
         default:
-          throw new Error(`Unsupport Right Register: ${arg2.value} for ${OpCode.MOV}`);
+          throw new Error(`Unsupport Right Register: ${arg2.value} for ${call.name}`);
       }
       break;
 
     default:
-      throw new Error(`Unsupport Right param type: ${arg2.type} for ${OpCode.MOV}`);
+      throw new Error(`Unsupport Right param type: ${arg2.type} for ${call.name}`);
   }
 }
