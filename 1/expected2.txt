@@ -1,0 +1,2 @@
+syntax errorNUM(hex) val: 93 new line
+syntax errorNUM(hex) val: 238

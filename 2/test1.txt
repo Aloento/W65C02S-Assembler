@@ -1,0 +1,3 @@
+jmp A
+label1 : nop
+nop A ; this is a comment

@@ -1,0 +1,3 @@
+expected answe in another file:
+input mov NUM(hex) val: 255 new line
+input jmp NUM (decimal ) val: 8055 new line

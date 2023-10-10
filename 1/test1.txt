@@ -1,0 +1,3 @@
+mov 0x32 
+mov 0xff
+jmp 8055
