@@ -1,0 +1,1 @@
+MOV a a b JMP jmp asdasfsa

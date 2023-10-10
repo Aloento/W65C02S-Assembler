@@ -1,0 +1,2 @@
+
+mov MOV jmp JMP nop NOP a A x X y Y 123 -123 0x123 -0x123 , [ ]

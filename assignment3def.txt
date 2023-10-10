@@ -1,0 +1,92 @@
+
+   Third Assignment
+
+0. Try to understand the code that I wrote on the last lecture.
+If you have problems, please ask me for a consultation opportunity.
+
+1. Refactor
+There is too much code in pasm.y, it should contain
+mainly the grammar. So create a new file, instructions.c,
+and move code there. In the actions of the parser file
+just call one or two functions from the instructions.c file.
+
+Warning: my code does not handle hexadecimal numbers, nor
+comments. Do not just replace your code with mine!
+
+2. More instructions
+Implement the following instructions.
+Their numeric code is included.
+0x55, 0x1234 are just example numbers or
+addresses.
+
+;loading something into a register:
+mov a, 0x55        ->  A9 55
+mov a, [ 0x1234 ]  ->  AD 34 12
+mov x, 0x55        ->  A2 55
+mov x, [ 0x1234 ]  ->  AE 34 12
+mov y, 0x55        ->  A0 55
+mov y, [ 0x1234 ]  ->  AC 34 12
+; storing the value from a register into memory:
+mov [ 0x1234 ], a  ->  8D 34 12
+mov [ 0x1234 ], x  ->  8E 34 12
+mov [ 0x1234 ], y  ->  8C 34 12
+; moving between registers:
+mov a, x           ->  8A
+mov x, a           ->  AA
+mov a, y           ->  98
+mov y, a           ->  A8
+;arithmetic and logic operations, the result always goes to A
+addc a, 0x55        ->  69 55  ; adds two bytes
+addc a, [ 0x1234 ]  ->  6D 34 12
+subc a, 0x55        ->  E9 55  ; substract
+subc a, [ 0x1234 ]  ->  ED 34 12
+and a, 0x55         ->  29 55  ; biwise and
+and a, [ 0x1234 ]   ->  2D 34 12
+or a, 0x55          ->  09 55  ; bitwise or
+or a, [ 0x1234 ]    ->  0D 34 12
+xor a, 0x55         ->  49 55  ; bitwise xor
+xor a, [ 0x1234 ]   ->  4D 34 12
+inc a            ->  1A   ; increment (add one)
+inc x            ->  E8
+inc y            ->  C8
+inc [ 0x1234 ]   ->  EE 34 12
+dec a            ->  3A   ; decrement (substract one)
+dec x            ->  CA
+dec y            ->  88
+dec [ 0x1234 ]   ->  CE 34 12
+; comparison operations (more explanations in the next class)
+cmp a, 0x55          ->  C9 55
+cmp a, [ 0x1234 ]    ->  CD 34 12
+cmp x, 0x55          ->  E0 55
+cmp x, [ 0x1234 ]    ->  EC 34 12
+cmp y, 0x55          ->  C0 55
+cmp y, [ 0x1234 ]    ->  CC 34 12
+; conditional jump. The meaning of the immediate value
+; will be explaine in the next class, or you can read the datasheet
+bzs 0x55    ->  F0 55
+bzc 0x55    ->  D0 55
+bcs 0x55    ->  B0 55
+bcc 0c55    ->  90 55
+
+3. Write tests
+Do not forget to write lots of test files.
+You will get extra points if your test file
+catches an error in an other groups solution.
+
+This is again a group assignment, so one solution per group is
+enough. Deadline is the next class (9th Nov, 16:00)
+
+Addendum:
+At present labels only work if they are
+on a line alone, like this:
+
+;example code
+label1:
+  mov a, 0xff
+
+Make it work also when the label just starts the line:
+
+;example code
+label2:  mov [ 0x1234 ], a
+
+

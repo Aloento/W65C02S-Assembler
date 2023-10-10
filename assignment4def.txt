@@ -1,0 +1,141 @@
+
+  Fourth Assignment
+
+1. Modify the lexer so, that underlines (_) can be part of an identifier.
+(And hexadecimal numbers should be case insensitive.)
+
+2. It would be great, if binary numbers can also be used.
+So implement binary numbers in addition to decimal and hexadecimal.
+A binary number looks like this:
+  0b11001011 = 0xc3
+
+3. Include the following instructions in the code:
+
+(S an P are two registers that I have not mentioned before.
+S is the stack pointer, P is the processor status register.)
+
+;subroutine calls
+call 0x1234  ->  20 32 12
+ret          ->  60
+reti         ->  40
+
+;stack operations
+push a      ->  48
+push x      ->  DA
+push y      ->  5A
+push p      ->  08
+pop a       ->  68
+pop x       ->  FA
+pop y       ->  7A
+pop p       ->  28
+
+;movement between x and s
+mov s, x  ->  9A
+mov x, s  ->  BA
+
+;manipulating bits in p
+sec  ->  38
+clc  ->  18
+sei  ->  78
+cli  ->  58
+clv  ->  B8
+
+;rotating bits left or right
+rotl a ->  2A
+rotr a ->  6A
+
+4. Write a subroutine, that moves the cursor
+of the lcd to a given position. The LCD
+has 2 rows and 16 columns, so you will need
+two inputs. Decide yourself on the calling
+convention, i.e. how to pass the inputs to
+the subroutine. Look up in the LCD's datasheet,
+what command(s) to send in order to move the cursor.
+For sending commands, use the already written
+subroutine.
+
+5. Unfortunately, the registers of the 6502 are one byte
+large, but the pointers have two bytes, so
+it is difficult to work with pointers.
+Therefore the designers of the CPU invented a trick,
+called zero page indirect addressing. You can write a pointer
+somewhere in the first 256 bytes of memory, and then
+you can move data between the memory pointed by this
+pointer and the registers.
+So for example you can write 0x55 into memory location 42
+and 0x81 into memory location 43, then the pointer at 42
+will point to 0x8155. Then you can load the byte from 0x8155
+into a with this instruction:
+
+mov a, [ zp[ 42 ] ]
+
+We need two sets of brackets here, the inner bracket
+(with the 'zp' prefix) means, that we must first look
+at 0x002a), the outer bracket means, that it is a pointer,
+so actually we must look at 0x002a and 0x002b, and then go
+to the memory location that this pointer points to.
+
+Additionally, we can add the value of the y register to the pointer
+before dereferencing it, that is called "zero page indirect indexed with Y"
+addressing. It is useful if the pointer points
+to the beginning of a string, and we want to get, let's say, the third
+letter (or want to visit all the letters one by one).
+
+Then we can do this:
+
+mov y, 2 ; 0 is first letter, 1 is second letter...
+mov a, [ zp[ 42 ] + y ] ; now we have the third letter in a.
+
+Add the following syntax to the parser:
+
+"["  "zp["  NUM  "]" "]"  is an argument, that is zero page indirect addressed
+"["  "zp["  NUM  "+"  "y" "]"  is an argument, that is zero page indirect
+                               indexed by Y addressed.
+
+The following instructions can be used with these addressing modes:
+
+mov a, [ zp[42] ]      ->  B2 2A
+mov a, [ zp[42] + y ]  ->  B1 2A
+mov [ zp[42] ], a      ->  92 2A
+mov [ zp[42] + y ], a  ->  91 2A
+
+addc a, [ zp[42] ]     ->  72 2A
+addc a, [ zp[42] + y ] ->  71 2A
+subc a, [ zp[42] ]     ->  F2 2A
+subc a, [ zp[42] + y ] ->  F1 2A
+cmp a, [ zp[42] ]      ->  D2 2A
+cmp a, [ zp[42] + y ]  ->  D1 2A
+and a, [ zp[42] ]      ->  32 2A
+and a, [ zp[42] + y ]  ->  31 2A
+or a, [ zp[42] ]       ->  12 2A
+or a, [ zp[42] + y ]   ->  11 2A
+xor a, [ zp[42] ]      ->  52 2A
+xor a, [ zp[42] + y ]  ->  51 2A
+
+Implement these opcodes as well. They are all 2 byte long, because
+one byte is enough to reference something in the first 256 bytes
+of memory.
+
+6. Add the possibility to insert data bytes into the code.
+A line of data starts with the keyword "db" (which stands
+for data bytes) an followed by either a single number (between
+0 an 255) or a comma separated list of numbers. These numbers
+are just inserted into the machine code unmodified.
+The counter bytesSoFar is incremented by the number of bytes.
+Of course, the line can be preceded by a label.
+Example:
+
+importantnumber:   db 55
+moreimportantnum:  db 0x42
+                db 66  ;  this data has no label
+hellostring:   db 72, 101, 108, 108, 111, 0 ; this is the string "Hello" in ASCII
+; if we start at the usual place, then importantnumber = 0x8055
+; and hellostring = 0x8058
+mov a, [ moreimportantnumber ]  ; 0x42 is loaded into a.
+;Next we put a pointer to hellostring into a zero page location:
+mov a, 0x58
+mov [0x42], a
+mov a, 0x80
+mov [0x43], a  ; now  zp[0x42]  points to hellostring
+mov y, 2
+mov a, [ zp[0x42] + y ] ; the ASCII code of "l" is loaded into a

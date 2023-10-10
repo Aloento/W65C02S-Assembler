@@ -1,0 +1,69 @@
+Dear Compilers and Assemblers sudents,
+
+In the second assignment you have two tasks:
+
+I. Add the possibility of comments.
+
+Traditionally, comments in assembly files
+start with a semicolon, and lasts until the end
+of line. So this should be a valid input:
+
+; Example file with comments
+mov a, 0xff
+mov [0x0002], a ; This is a comment at the end of line
+; this line is comment only
+jmp 0x8055 ; more comment
+;even more comment
+
+It is only necessary to modify the lexer so that
+it just ignores the comments (similar to space)
+but other solutions are also possible.
+
+
+II. Add labels.
+
+In the example above, we had to write
+the destination of JMP as a number.
+But usually it is quite difficult to
+compute the address where we want to jump,
+so it should be done by the assembler, not by
+the programmer. Therefore labels are invented.
+
+For this, we need a new tokem called IDENT (stands
+for identifier). An IDENT starts with an English
+letter and may contain English letters and numbers.
+
+Then, we can mark any line with an IDENT, followed
+by a colon (:). Later, we can jump to this line
+by writing the IDENT after jmp instead of a number.
+
+Example:
+
+;example file for labels
+start:
+    mov a, 0xff ; the start label points to this line
+    mov [0x002], a
+label1: mov a, 0x55 ; this line contains a label
+    mov [0x0000], a
+    mov a, 0xaa
+    mov [0x0000], a
+    jmp label1 ; Now, we do not have to compute the address,
+               ;the program jumps to the third instruction
+
+
+So you need two new tokens (IDENT and ':') and
+have to modify the grammar so, that an IDENT is
+also a valid argument, and every line can start
+with a label ( IDENT ':' ) before the opcode.
+
+Also, otherwise empty lines can also contain
+a label, in this case they point to the next nonempty line.
+
+Do not forget to include test files.
+
+Deadline is just before next class (26 Oct. 16:00)
+
+Best regards
+
+András
+..

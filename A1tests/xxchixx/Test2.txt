@@ -1,0 +1,4 @@
+jmp a
+nop
+jmpy
+jmp3000

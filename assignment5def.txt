@@ -1,0 +1,53 @@
+
+  Fifth (and last) Assignment
+
+0. Make sure, that your code passes the tests from the previous homeworks.
+
+1. Finish the work with the abstract syntax tree.
+  - Modify the grammar actions in the bison file. It must recognize
+    expressions like NUM + NUM, NUM - NUM, NUM * NUM, NUM / NUM, NUM % NUM.
+    The semantic value of an expression
+    must be expr_ast. You must allocate new memory for it with malloc, and then
+    fill in the fields of the structure with appropriate data.
+  - The semantic value of a line must be file_ast. This is a singly linked list
+    of file_ast nodes. Define two global variables (symilar to bytesSoFar),
+    astHead and astTail wich point to the beginning and end of this
+    linked list. When a new line is encountered, allocate memory for a new
+    node and append it to the tail of the linked list. Filling in the appropriate
+    fields is the job of the printinstructions functions. Instead of actually
+    printing bytes, they must create a file_ast node. Also the definition of
+    a_type_t  and argumet_t must be modified so as argument_t be able to store
+    an exp_ast (in case, the argument contains an expression).
+  - The actual printing will happen at the end of the file. We know, that
+    we reached the end, when the 
+
+asmfile : lines  { printf("asmfile (start symbol) finished\n");}
+
+   grammar rule is recognized. Instead of printing the finish text,
+   evaluate the complete file_ast with the function evallines(*astHead);
+   It is in ast.c.
+
+
+2. It would be great to be able to define constants.
+   For example in our LCD printing program we write a lot of time the number 0x4001
+   wich is the location of port A in the interface adapter. instead of writing
+
+   mov [0x4001], a
+
+   we would like to have someting like this:
+
+   PORTA = 0x4001
+   mov [ PORTA ] , a
+
+   so create a new grammar rule for line:
+
+line :  IDENT  '='  expr  LF
+
+  and in the action evaluate expr and insert IDENT and the value of expr into the symbol table
+  (similar to handling a label)
+
+3. Write tests
+
+
+There is code in the bodri5 repository, namely pasm/pasm.y,  pasm/ast.c, pasm/ast.h
+that you can use.

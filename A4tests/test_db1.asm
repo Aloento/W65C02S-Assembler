@@ -1,0 +1,4 @@
+datlabel1:
+  db 0x42
+  db 0x42, 0x43
+mov a, [datlabel1]

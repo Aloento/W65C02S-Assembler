@@ -1,0 +1,3 @@
+
+mov a, 0xab
+mov a, 0xAB

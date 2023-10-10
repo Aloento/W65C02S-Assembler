@@ -1,0 +1,4 @@
+mov a, [3201]
+mov a, b
+mov x, 0xffcd
+movx,0xffcd
