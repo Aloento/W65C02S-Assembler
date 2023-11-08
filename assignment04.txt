@@ -1,0 +1,79 @@
+Deadline: 8 November
+
+
+Assignment 4
+Implement the two transformations for our "Pécs Assembler 23"
+
+The skeleton of the project can be found in the bodri repository.
+
+0. Finish everithyinf from the previous assignments, that are
+needed for the transformations.
+
+1. Divide up the task, and assign the subtasks to group members.
+Document this in a file that you upload to the git. This must be
+the first upload. I will chechk, who commits what later, and
+distribute the points accordingly.
+
+2. The first transformation traverses the abstract syntax tree,
+and determines the machine code byte positions for every line.
+Traverses means, that starts from the first line and visits
+every line in order. The root of the AST is stored in the
+global variable astroot in transformtester.c.
+
+The determnation of the bytepositions can be done as follows.
+At the beginning, the byteposition is undefined.
+ If you meet an LT_SECTION line, the the byteposition of the
+next line is determined by the number after the keyword origin.
+I.e: after this line:
+
+section text origin 0x8100
+
+the byteposition of the next line will be 0x8100.
+
+The LT_LABEL and LT_DEFINITION lines do not change the byteposition.
+For an LT_INSTRUCTION or LT_LABEL_PLUS_INSTRUCTION line,
+the position of the next line is determined by the length of the
+current instruction. This length can be either 1, 2, or three
+depending on the opcode and the arguments. The length is added
+to the current byteposition to get the byteposition of the next line.
+Some combination of opcodes and arguments are illegal, in these
+cases print an error message and return false.
+
+For example:
+section text origin 0x8100
+    mov a, [0xfff0]  ; the byte position is 0x8100 here. The length of the instruction is 3
+    inc a            ; the byte position is 0x8103 here. The length of the instruction is 1
+    jmp somewhere    ; the byte position is 0x8104 here. The length of the instruction is 3
+
+For an LT_DATA and LT_LABEL_PLUS_DATA line the length is the number of bytes that is written
+there. For example (continuing from above):
+
+   db  1,2,3,4,5,6   ; the byte position is 0x8107 here. The length of this line is 6
+
+
+Also, when encountering a line with a label, the identifier and the byteposition
+must be inserted into the symbol table as a key-value pair. The symboltable is
+implemented in symboltable.h, there are three functions: you can put something
+there, check that a key is already there, and read back the value, if the key
+is indeed there. (This is a very simple implementation, if you do not like it,
+you can change it to a better.)
+
+
+3. The second transformation also traverses the abstract syntax tree,
+and evaluates the expressions in the definitions. This transformatin
+does not modify the AST, just the symbol table.
+If a line is LT_DEFINITION, then the expression on the right hand side
+is evaluated, then the identifier on the left hand side and the
+evaluated value are put into the symbol table. If this identifier
+is already in the symbol table, the print an error message and return false.
+
+The evaluation if an expression is a recursive procedure.
+The value of an ET_NUM is the number itself. The value of an
+ET_IDENT is the value found in the symbol table for this
+ident. If there is no entry for this ident in the symbol table, then
+print the error message: undefined variable and return false.
+For evaluating an ET_PLUS node, you first evaluate the
+left and right subexpressions and add the results.
+Similarly for multiplication and other binary operations.
+(In case of division or reminder, check that the
+right subexpresson is not zero.)

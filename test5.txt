@@ -1,0 +1,6 @@
+
+; Pécs Assembler 23 example program
+;
+; The semicolon starts a comment that lasts until the end of line.
+
+VIA_BASE = 4000 ; Variables can be defined that way: name, equal sign, expression.
