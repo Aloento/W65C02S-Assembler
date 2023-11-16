@@ -1,5 +1,6 @@
 #include "symboltable.h"
 #include "utils.h"
+#include <stdio.h>
 
 struct symrec
 {
@@ -39,4 +40,14 @@ int getsym(const char* name)
 		if (strcmp(p->name, name) == 0) { return p->sval; }
 	}
 	return -1; /*Arbitrary value, if the symbol is not found.*/
+}
+
+void printsymboltable()
+{
+	printf("Symbol table\n");
+	for (symrec* p = symtable; p != NULL; p = p->next)
+	{
+		printf("%s = %d (0x%x)\n", p->name, p->sval, p->sval);
+	}
+	printf("\n");
 }

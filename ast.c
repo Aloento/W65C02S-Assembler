@@ -1,38 +1,38 @@
 #include "ast.h"
 #include <stdio.h>
 
-expr_node_t *newexpr_num(int num, YYLTYPE loc)
+expr_node_t* newexpr_num(int num, YYLTYPE loc)
 {
-	expr_node_t *retval = malloc(sizeof(expr_node_t));
+	expr_node_t* retval = malloc(sizeof(expr_node_t));
 	retval->et = ET_NUM;
 	retval->num = num;
 	return retval;
 }
 
-expr_node_t *newexpr_ident(char *ident, YYLTYPE loc)
+expr_node_t* newexpr_ident(char* ident, YYLTYPE loc)
 {
-	expr_node_t *retval = malloc(sizeof(expr_node_t));
+	expr_node_t* retval = malloc(sizeof(expr_node_t));
 	retval->et = ET_IDENT;
 	retval->ident = ident;
 	return retval;
 }
 
-expr_node_t *newexpr_binop(expr_type_t etype, expr_node_t *left, expr_node_t *right, YYLTYPE loc)
+expr_node_t* newexpr_binop(expr_type_t etype, expr_node_t* left, expr_node_t* right, YYLTYPE loc)
 {
-	expr_node_t *retval = malloc(sizeof(expr_node_t));
+	expr_node_t* retval = malloc(sizeof(expr_node_t));
 	retval->et = etype;
 	retval->left = left;
 	retval->right = right;
 	return retval;
 }
 
-lines_node_t *addline(lines_node_t *oldlines, line_node_t *newline)
+lines_node_t* addline(lines_node_t* oldlines, line_node_t* newline)
 {
 	if (oldlines && newline)
 	{
 		if (oldlines->lastlines)
 		{
-			lines_node_t *newnode = newlines();
+			lines_node_t* newnode = newlines();
 			newnode->currentline = newline;
 			oldlines->lastlines->nextlines = newnode;
 			oldlines->lastlines = newnode;
@@ -47,27 +47,27 @@ lines_node_t *addline(lines_node_t *oldlines, line_node_t *newline)
 	return oldlines;
 }
 
-lines_node_t *newlines()
+lines_node_t* newlines()
 {
-	lines_node_t *retval = malloc(sizeof(lines_node_t));
+	lines_node_t* retval = malloc(sizeof(lines_node_t));
 	retval->currentline = NULL;
 	retval->nextlines = NULL;
 	retval->lastlines = NULL;
 	return retval;
 }
 
-line_node_t *newline_label(char *ident, YYLTYPE loc)
+line_node_t* newline_label(char* ident, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_LABEL;
 	retval->location = loc;
 	retval->ident = ident;
 	return retval;
 }
 
-line_node_t *newline_instruction0(opcode_t opcode, YYLTYPE loc)
+line_node_t* newline_instruction0(opcode_t opcode, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_INSTRUCTION;
 	retval->location = loc;
 	retval->opcode = opcode;
@@ -75,9 +75,9 @@ line_node_t *newline_instruction0(opcode_t opcode, YYLTYPE loc)
 	return retval;
 }
 
-line_node_t *newline_label_instruction0(char *ident, opcode_t opcode, YYLTYPE loc)
+line_node_t* newline_label_instruction0(char* ident, opcode_t opcode, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_LABEL_PLUS_INSTRUCTION;
 	retval->location = loc;
 	retval->opcode = opcode;
@@ -86,9 +86,9 @@ line_node_t *newline_label_instruction0(char *ident, opcode_t opcode, YYLTYPE lo
 	return retval;
 }
 
-line_node_t *newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYPE loc)
+line_node_t* newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_INSTRUCTION;
 	retval->location = loc;
 	retval->opcode = opcode;
@@ -98,9 +98,9 @@ line_node_t *newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYP
 	return retval;
 }
 
-line_node_t *newline_label_instruction1(char *ident, opcode_t opcode, argument_node_t argn1, YYLTYPE loc)
+line_node_t* newline_label_instruction1(char* ident, opcode_t opcode, argument_node_t argn1, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_LABEL_PLUS_INSTRUCTION;
 	retval->location = loc;
 	retval->opcode = opcode;
@@ -111,9 +111,9 @@ line_node_t *newline_label_instruction1(char *ident, opcode_t opcode, argument_n
 	return retval;
 }
 
-line_node_t *newline_instruction2(opcode_t opcode, argument_node_t argn1, argument_node_t argn2, YYLTYPE loc)
+line_node_t* newline_instruction2(opcode_t opcode, argument_node_t argn1, argument_node_t argn2, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_INSTRUCTION;
 	retval->location = loc;
 	retval->opcode = opcode;
@@ -124,9 +124,10 @@ line_node_t *newline_instruction2(opcode_t opcode, argument_node_t argn1, argume
 	return retval;
 }
 
-line_node_t *newline_label_instruction2(char *ident, opcode_t opcode, argument_node_t argn1, argument_node_t argn2, YYLTYPE loc)
+line_node_t* newline_label_instruction2(char* ident, opcode_t opcode, argument_node_t argn1, argument_node_t argn2,
+                                        YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_LABEL_PLUS_INSTRUCTION;
 	retval->location = loc;
 	retval->opcode = opcode;
@@ -138,18 +139,18 @@ line_node_t *newline_label_instruction2(char *ident, opcode_t opcode, argument_n
 	return retval;
 }
 
-line_node_t *newline_section(char *section_name, YYLTYPE loc)
+line_node_t* newline_section(char* section_name, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_SECTION; // Assuming LT_SECTION is a valid line type
 	retval->location = loc;
 	retval->ident = section_name;
 	return retval;
 }
 
-line_node_t *newline_definition(char *def_name, expr_node_t *def_value, YYLTYPE loc)
+line_node_t* newline_definition(char* def_name, expr_node_t* def_value, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_DEFINITION;
 	retval->location = loc;
 	retval->ident = def_name;
@@ -157,43 +158,43 @@ line_node_t *newline_definition(char *def_name, expr_node_t *def_value, YYLTYPE 
 	return retval;
 }
 
-line_node_t *newline_label_db(char *ident, YYLTYPE loc)
+line_node_t* newline_label_db(char* ident, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_LABEL_DB;
 	retval->location = loc;
 	retval->ident = ident;
 	return retval;
 }
 
-line_node_t *newline_label_dw(char *label_name, YYLTYPE loc)
+line_node_t* newline_label_dw(char* label_name, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_LABEL_DW;
 	retval->location = loc;
 	retval->ident = label_name;
 	return retval;
 }
 
-line_node_t *newline_db(expr_node_t *data, YYLTYPE loc)
+line_node_t* newline_db(expr_node_t* data, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_DATA;
 	retval->location = loc;
 	retval->expr1 = data;
 	return retval;
 }
 
-line_node_t *newline_dw(expr_node_t *data, YYLTYPE loc)
+line_node_t* newline_dw(expr_node_t* data, YYLTYPE loc)
 {
-	line_node_t *retval = malloc(sizeof(line_node_t));
+	line_node_t* retval = malloc(sizeof(line_node_t));
 	retval->lt = LT_DW;
 	retval->location = loc;
 	retval->expr1 = data;
 	return retval;
 }
 
-void printexprnode(expr_node_t *node)
+void printexprnode(expr_node_t* node)
 {
 	if (node)
 	{
@@ -230,7 +231,7 @@ void printexprnode(expr_node_t *node)
 	}
 }
 
-void printlinenode(line_node_t *node)
+void printlinenode(line_node_t* node)
 {
 	if (node)
 	{
@@ -241,7 +242,7 @@ void printlinenode(line_node_t *node)
 			break;
 		case LT_INSTRUCTION:
 			printf("LINE: instruction, bytepos=%d, opcode=%d, arg1=%d, arg2=%d\n", node->bytepos, node->opcode,
-				   node->arg1, node->arg2);
+			       node->arg1, node->arg2);
 			printexprnode(node->expr1);
 			printexprnode(node->expr2);
 			break;
@@ -257,9 +258,9 @@ void printlinenode(line_node_t *node)
 	}
 }
 
-void printlinesnode(lines_node_t *node)
+void printlinesnode(lines_node_t* node)
 {
-	lines_node_t *currnode = node;
+	lines_node_t* currnode = node;
 	while (currnode)
 	{
 		printlinenode(currnode->currentline);

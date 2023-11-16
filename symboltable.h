@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
 
 /*Puts a new symbol and an associated value to the symbol table*/
@@ -11,3 +9,5 @@ bool checksym(const char* name);
 /*Returns the value of the symbol, if it is in the symbol table.
   If the symbol is not in the table, the return value is arbitrary.*/
 int getsym(const char* name);
+
+void printsymboltable();
