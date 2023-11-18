@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include "machinecodes.h"
+#include <stdio.h>
 
 
 void printresult1(int err, unsigned char res[3])
@@ -41,7 +41,7 @@ void printresult(int err, unsigned char res[3])
 }
 
 
-int main(int argc, char** argv)
+int main3(int argc, char** argv)
 {
 	unsigned char result[3];
 	/* 0 */

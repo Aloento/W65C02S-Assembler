@@ -1,12 +1,12 @@
-#include <stdio.h>
 #include "ast.h"
 #include "pasm.tab.h"
+#include <stdio.h>
 
 
 astroot_t astroot;
 
 
-int main(int argc, char** argv)
+int main1(int argc, char** argv)
 {
 	int retval;
 	astroot = NULL;
