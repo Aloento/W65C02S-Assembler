@@ -26,7 +26,7 @@ bool transform1()
 	int instruction_len;
 	unsigned char result[3];
 	int numexprs;
-	expr_list* curexpr;
+	expr_linked_list* curexpr;
 	lines_node_t* currentlines = astroot;
 
 	while (currentlines != NULL)
@@ -48,8 +48,6 @@ bool transform1()
 			{
 				return false;
 			}
-			result[3];
-
 			instruction_len = getmachinebytes(0, currentline->opcode, currentline->arg1, 0, currentline->arg2, 0,
 				result);
 			if (instruction_len < 1)
@@ -61,9 +59,6 @@ bool transform1()
 			current_bytepos += instruction_len;
 			break;
 		case LT_INSTRUCTION:
-			instruction_len = 0;
-			result[3];
-
 			instruction_len = getmachinebytes(0, currentline->opcode, currentline->arg1, 0, currentline->arg2, 0,
 				result);
 			if (instruction_len < 1)
@@ -80,7 +75,7 @@ bool transform1()
 				return false;
 			}
 			numexprs = 0;
-			curexpr = currentline->elist;
+			curexpr = currentline->linked_list;
 			while (curexpr != NULL)
 			{
 				numexprs++;
@@ -91,7 +86,7 @@ bool transform1()
 			break;
 		case LT_DB:
 			numexprs = 0;
-			curexpr = currentline->elist;
+			curexpr = currentline->linked_list;
 			while (curexpr != NULL)
 			{
 				numexprs++;
@@ -187,7 +182,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 		*val = val1 % val2;
 		return 0;
 	}
-	case ET_DIVISON:
+	case ET_DIVIDE:
 	{
 		int val1, val2;
 		int ret1 = evaluate_expression(expr->left, &val1);
@@ -203,7 +198,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 		*val = val1 / val2;
 		return 0;
 	}
-	case ET_EQUALS:
+	case ET_EQUAL:
 	{
 		int val1, val2;
 		int ret1 = evaluate_expression(expr->left, &val1);

@@ -3,6 +3,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+expr_node_t* newexpr_num(int num, YYLTYPE loc)
+{
+	expr_node_t* retval = malloc(sizeof(expr_node_t));
+	retval->et = ET_NUM;
+	retval->num = num;
+	return retval;
+}
+
+expr_node_t* newexpr_ident(char* ident, YYLTYPE loc)
+{
+	expr_node_t* retval = malloc(sizeof(expr_node_t));
+	retval->et = ET_IDENT;
+	retval->ident = ident;
+	return retval;
+}
+
+expr_node_t* newexpr_binop(expr_type_t etype, expr_node_t* left, expr_node_t* right, YYLTYPE loc)
+{
+	expr_node_t* retval = malloc(sizeof(expr_node_t));
+	retval->et = etype;
+	retval->left = left;
+	retval->right = right;
+	return retval;
+}
+
 lines_node_t* addline(lines_node_t* oldlines, line_node_t* newline)
 {
 	if (oldlines && newline)
@@ -75,6 +100,80 @@ line_node_t* newline_label_instruction(char* ident, opcode_t opcode, argument_ty
 	return newline;
 }
 
+line_node_t* newline_instruction0(opcode_t opcode, YYLTYPE loc)
+{
+	line_node_t* retval = malloc(sizeof(line_node_t));
+	retval->lt = LT_INSTRUCTION;
+	retval->location = loc;
+	retval->opcode = opcode;
+	retval->arg1 = retval->arg2 = AT_NONE;
+	return retval;
+}
+
+line_node_t* newline_label_instruction0(char* ident, opcode_t opcode, YYLTYPE loc)
+{
+	line_node_t* retval = malloc(sizeof(line_node_t));
+	retval->lt = LT_LABEL_PLUS_INSTRUCTION;
+	retval->location = loc;
+	retval->opcode = opcode;
+	retval->arg1 = retval->arg2 = AT_NONE;
+	retval->ident = ident;
+	return retval;
+}
+
+line_node_t* newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYPE loc)
+{
+	line_node_t* retval = malloc(sizeof(line_node_t));
+	retval->lt = LT_INSTRUCTION;
+	retval->location = loc;
+	retval->opcode = opcode;
+	retval->arg1 = argn1.at_at;
+	retval->expr1 = argn1.at_expr;
+	retval->arg2 = AT_NONE;
+	return retval;
+}
+
+line_node_t* newline_label_instruction1(char* ident, opcode_t opcode, argument_node_t argn1, YYLTYPE loc)
+{
+	line_node_t* retval = malloc(sizeof(line_node_t));
+	retval->lt = LT_LABEL_PLUS_INSTRUCTION;
+	retval->location = loc;
+	retval->opcode = opcode;
+	retval->arg1 = argn1.at_at;
+	retval->expr1 = argn1.at_expr;
+	retval->arg2 = AT_NONE;
+	retval->ident = ident;
+	return retval;
+}
+
+line_node_t* newline_instruction2(opcode_t opcode, argument_node_t argn1, argument_node_t argn2, YYLTYPE loc)
+{
+	line_node_t* retval = malloc(sizeof(line_node_t));
+	retval->lt = LT_INSTRUCTION;
+	retval->location = loc;
+	retval->opcode = opcode;
+	retval->arg1 = argn1.at_at;
+	retval->expr1 = argn1.at_expr;
+	retval->arg2 = argn2.at_at;
+	retval->expr2 = argn2.at_expr;
+	return retval;
+}
+
+line_node_t* newline_label_instruction2(char* ident, opcode_t opcode, argument_node_t argn1, argument_node_t argn2,
+	YYLTYPE loc)
+{
+	line_node_t* retval = malloc(sizeof(line_node_t));
+	retval->lt = LT_LABEL_PLUS_INSTRUCTION;
+	retval->location = loc;
+	retval->opcode = opcode;
+	retval->arg1 = argn1.at_at;
+	retval->expr1 = argn1.at_expr;
+	retval->arg2 = argn2.at_at;
+	retval->expr2 = argn2.at_expr;
+	retval->ident = ident;
+	return retval;
+}
+
 line_node_t* newline_section(char* ident, int num, YYLTYPE loc)
 {
 	line_node_t* newline = malloc(sizeof(line_node_t));
@@ -97,68 +196,68 @@ line_node_t* newline_definition(char* ident, expr_node_t* expr, YYLTYPE loc)
 	return newline;
 }
 
-line_node_t* newline_label_db(char* ident, expr_list* elist, YYLTYPE loc)
+line_node_t* newline_label_db(char* ident, expr_linked_list* linked, YYLTYPE loc)
 {
 	line_node_t* newline = malloc(sizeof(line_node_t));
 	newline->lt = LT_LABEL_PLUS_DB;
 	newline->location = loc;
 	newline->ident = ident;
-	newline->elist = elist;
+	newline->linked_list = linked;
 
 	return newline;
 }
 
-line_node_t* newline_label_dw(char* ident, expr_list* elist, YYLTYPE loc)
+line_node_t* newline_label_dw(char* ident, expr_linked_list* linked, YYLTYPE loc)
 {
 	line_node_t* newline = malloc(sizeof(line_node_t));
 	newline->lt = LT_LABEL_PLUS_DW;
 	newline->location = loc;
 	newline->ident = ident;
-	newline->elist = elist;
+	newline->linked_list = linked;
 
 	return newline;
 }
 
-line_node_t* newline_db(expr_list* elist, YYLTYPE loc)
+line_node_t* newline_db(expr_linked_list* linked, YYLTYPE loc)
 {
 	line_node_t* newline = malloc(sizeof(line_node_t));
 	newline->lt = LT_DB;
 	newline->location = loc;
-	newline->elist = elist;
+	newline->linked_list = linked;
 
 	return newline;
 }
 
-line_node_t* newline_dw(expr_list* elist, YYLTYPE loc)
+line_node_t* newline_dw(expr_linked_list* linked, YYLTYPE loc)
 {
 	line_node_t* newline = malloc(sizeof(line_node_t));
 	newline->lt = LT_DW;
 	newline->location = loc;
-	newline->elist = elist;
+	newline->linked_list = linked;
 
 	return newline;
 }
 
-expr_list* new_dbarg(expr_node_t* expr)
+expr_linked_list* new_dbarg(expr_node_t* expr)
 {
-	expr_list* newarg = malloc(sizeof(expr_list));
+	expr_linked_list* newarg = malloc(sizeof(expr_linked_list));
 	newarg->expr = expr;
 	newarg->next = NULL;
 	return newarg;
 }
 
-expr_list* dbarg_append(expr_list* elist, expr_node_t* expr)
+expr_linked_list* dbarg_append(expr_linked_list* linked, expr_node_t* expr)
 {
-	expr_list* newarg = malloc(sizeof(expr_list));
+	expr_linked_list* newarg = malloc(sizeof(expr_linked_list));
 	newarg->expr = expr;
 	newarg->next = NULL;
-	expr_list* currarg = elist;
+	expr_linked_list* currarg = linked;
 	while (currarg->next)
 	{
 		currarg = currarg->next;
 	}
 	currarg->next = newarg;
-	return elist;
+	return linked;
 }
 
 // Implement the expr_node_t functions
@@ -179,7 +278,7 @@ expr_node_t* ident_expression(char* ident)
 	expr_node_t* node = malloc(sizeof(expr_node_t));
 	node->et = ET_IDENT;
 	node->num = 0;
-	node->ident = strdup(ident); // Make a copy of the identifier.
+	node->ident = _strdup(ident); // Make a copy of the identifier.
 	node->left = NULL;
 	node->right = NULL;
 	return node;
@@ -201,24 +300,24 @@ expr_node_t* binary_expression(expr_type_t et, expr_node_t* left, expr_node_t* r
 argument_node_t* immediate_argument(expr_node_t* expr)
 {
 	argument_node_t* arg = malloc(sizeof(argument_node_t));
-	arg->at = AT_IMMEDIATE;
-	arg->expr = expr;
+	arg->at_at = AT_IMMEDIATE;
+	arg->at_expr = expr;
 	return arg;
 }
 
 argument_node_t* absolute_argument(expr_node_t* expr)
 {
 	argument_node_t* arg = malloc(sizeof(argument_node_t));
-	arg->at = AT_ABSOLUTE;
-	arg->expr = expr;
+	arg->at_at = AT_ABSOLUTE;
+	arg->at_expr = expr;
 	return arg;
 }
 
 argument_node_t* register_argument(argument_type_t at)
 {
 	argument_node_t* arg = malloc(sizeof(argument_node_t));
-	arg->at = at;
-	arg->expr = NULL;
+	arg->at_at = at;
+	arg->at_expr = NULL;
 	return arg;
 }
 
@@ -228,59 +327,60 @@ void printexpression(expr_node_t* node)
 	{
 		switch (node->et)
 		{
-			case
-			ET_NUM: printf("EXPR: num, num=%d\n", node->num);
-				break;
-				case
-				ET_IDENT: printf("EXPR: ident, ident=%s\n", node->ident);
-					break;
-					case
-					ET_PLUS: printf("EXPR: plus\n");
-						printexpression(node->left);
-						printexpression(node->right);
-						break;
-						case
-						ET_MINUS: printf("EXPR: minus\n");
-							printexpression(node->left);
-							printexpression(node->right);
-							break;
-							case
-							ET_TIMES: printf("EXPR: times\n");
-								printexpression(node->left);
-								printexpression(node->right);
-								break;
-								case
-								ET_MODULO: printf("EXPR: modulo\n");
-									printexpression(node->left);
-									printexpression(node->right);
-									break;
-									case
-									ET_DIVISON: printf("EXPR: division\n");
-										printexpression(node->left);
-										printexpression(node->right);
-										break;
-										case
-										ET_EQUALS: printf("EXPR: equals\n");
-											printexpression(node->left);
-											printexpression(node->right);
-											break;
-											case
-											ET_NOT_EQUAL: printf("EXPR: not equal\n");
-												printexpression(node->left);
-												printexpression(node->right);
-												break;
-												case
-												ET_AND: printf("EXPR: and\n");
-													printexpression(node->left);
-													printexpression(node->right);
-													break;
-													case
-													ET_OR: printf("EXPR: or\n");
-														printexpression(node->left);
-														printexpression(node->right);
-														break;
-													default:
-														printf("Expression type not yet implemented\n");
+
+		case ET_NUM:
+			printf("EXPR: num, num=%d\n", node->num);
+			break;
+		case ET_IDENT:
+			printf("EXPR: ident, ident=%s\n", node->ident);
+			break;
+		case ET_PLUS:
+			printf("EXPR: plus\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_MINUS:
+			printf("EXPR: minus\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_TIMES:
+			printf("EXPR: times\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_MODULO:
+			printf("EXPR: modulo\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_DIVIDE:
+			printf("EXPR: DIVIDE\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_EQUAL:
+			printf("EXPR: equal\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_NOT_EQUAL:
+			printf("EXPR: not equal\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_AND:
+			printf("EXPR: and\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		case ET_OR:
+			printf("EXPR: or\n");
+			printexpression(node->left);
+			printexpression(node->right);
+			break;
+		default:
+			printf("Expression type not yet implemented\n");
 		}
 	}
 	else
@@ -288,7 +388,6 @@ void printexpression(expr_node_t* node)
 		printf("Empty EXPR node\n");
 	}
 }
-
 
 void printlinenode(line_node_t* node)
 {
