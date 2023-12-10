@@ -6,10 +6,5 @@ lexertester.exe
 bisontester.exe
 transformtester.exe
 
-pasm.tab.h
-pasm.tab.c
-
-lex.yy.c
-lex.yy.o
 .vs
 x64
