@@ -387,19 +387,19 @@ static const YY_CHAR yy_ec[256] =
 {
 	0,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 2,
+	1, 1, 3, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 3, 4, 5, 6, 1, 1, 7, 8, 8,
-	8, 8, 8, 8, 8, 8, 8, 9, 10, 1,
-	11, 1, 1, 1, 12, 13, 13, 13, 13, 13,
-	14, 14, 14, 14, 14, 14, 14, 14, 14, 15,
-	14, 14, 16, 14, 14, 14, 14, 17, 18, 14,
-	19, 1, 20, 1, 14, 1, 21, 22, 23, 24,
+	1, 4, 5, 6, 7, 1, 1, 8, 9, 9,
+	9, 9, 9, 9, 9, 9, 9, 10, 11, 1,
+	12, 1, 1, 1, 13, 14, 14, 14, 14, 14,
+	15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
+	15, 15, 17, 15, 15, 15, 15, 18, 19, 15,
+	20, 1, 21, 1, 15, 1, 22, 23, 24, 25,
 
-	25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
-	35, 36, 14, 37, 38, 39, 40, 41, 42, 43,
-	44, 45, 1, 1, 1, 1, 1, 1, 1, 1,
+	26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+	36, 37, 15, 38, 39, 40, 41, 42, 43, 44,
+	45, 46, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -416,22 +416,22 @@ static const YY_CHAR yy_ec[256] =
 	1, 1, 1, 1, 1
 };
 
-static const YY_CHAR yy_meta[46] =
+static const YY_CHAR yy_meta[47] =
 {
 	0,
-	1, 2, 1, 1, 1, 1, 3, 3, 1, 1,
-	1, 3, 3, 4, 4, 4, 4, 4, 1, 1,
-	3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
+	1, 2, 1, 1, 1, 1, 1, 3, 3, 1,
+	1, 1, 3, 3, 4, 4, 4, 4, 4, 1,
+	1, 3, 3, 3, 3, 3, 3, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4
+	4, 4, 4, 4, 4, 4
 };
 
 static const flex_int16_t yy_base[138] =
 {
 	0,
-	0, 0, 149, 150, 150, 150, 150, 150, 150, 39,
-	41, 150, 0, 150, 0, 0, 0, 0, 0, 0,
-	150, 150, 26, 22, 36, 41, 27, 115, 112, 39,
+	0, 0, 150, 151, 151, 151, 151, 151, 151, 39,
+	41, 151, 0, 151, 0, 0, 0, 0, 0, 0,
+	151, 151, 26, 22, 36, 41, 27, 115, 112, 39,
 	109, 105, 45, 119, 17, 117, 121, 106, 45, 65,
 	0, 0, 0, 116, 115, 106, 98, 105, 103, 102,
 	96, 96, 0, 108, 98, 0, 97, 105, 91, 85,
@@ -443,7 +443,7 @@ static const flex_int16_t yy_base[138] =
 	65, 0, 0, 0, 82, 63, 0, 80, 0, 0,
 	73, 72, 71, 66, 61, 0, 0, 0, 59, 60,
 	0, 59, 0, 0, 0, 0, 51, 43, 0, 0,
-	0, 43, 0, 150, 91, 93, 73
+	0, 43, 0, 151, 92, 94, 74
 };
 
 static const flex_int16_t yy_def[138] =
@@ -466,57 +466,57 @@ static const flex_int16_t yy_def[138] =
 	136, 136, 136, 0, 134, 134, 134
 };
 
-static const flex_int16_t yy_nxt[196] =
+static const flex_int16_t yy_nxt[198] =
 {
 	0,
-	4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-	14, 15, 16, 16, 17, 18, 19, 20, 21, 22,
-	23, 24, 25, 26, 16, 16, 16, 16, 27, 28,
-	16, 16, 29, 30, 31, 32, 33, 34, 35, 16,
-	36, 37, 38, 20, 39, 40, 40, 40, 40, 44,
-	47, 96, 57, 69, 70, 41, 49, 97, 48, 45,
-	58, 50, 53, 46, 61, 54, 55, 51, 52, 66,
-	74, 40, 40, 62, 101, 76, 133, 132, 63, 67,
-	75, 41, 56, 99, 131, 130, 129, 128, 100, 127,
-	102, 42, 126, 42, 42, 43, 43, 125, 124, 123,
+	4, 5, 5, 6, 7, 8, 9, 10, 11, 12,
+	13, 14, 15, 16, 16, 17, 18, 19, 20, 21,
+	22, 23, 24, 25, 26, 16, 16, 16, 16, 27,
+	28, 16, 16, 29, 30, 31, 32, 33, 34, 35,
+	16, 36, 37, 38, 20, 39, 40, 40, 40, 40,
+	44, 47, 96, 57, 69, 70, 41, 49, 97, 48,
+	45, 58, 50, 53, 46, 61, 54, 55, 51, 52,
+	66, 74, 40, 40, 62, 101, 76, 133, 132, 63,
+	67, 75, 41, 56, 99, 131, 130, 129, 128, 100,
+	127, 102, 42, 126, 42, 42, 43, 43, 125, 124,
 
-	122, 121, 120, 119, 118, 117, 116, 115, 114, 113,
-	112, 111, 110, 109, 108, 107, 106, 105, 104, 103,
-	98, 95, 94, 93, 92, 91, 90, 89, 88, 87,
-	86, 85, 84, 83, 82, 81, 80, 79, 78, 77,
-	73, 72, 71, 68, 65, 64, 60, 59, 134, 3,
+	123, 122, 121, 120, 119, 118, 117, 116, 115, 114,
+	113, 112, 111, 110, 109, 108, 107, 106, 105, 104,
+	103, 98, 95, 94, 93, 92, 91, 90, 89, 88,
+	87, 86, 85, 84, 83, 82, 81, 80, 79, 78,
+	77, 73, 72, 71, 68, 65, 64, 60, 59, 134,
+	3, 134, 134, 134, 134, 134, 134, 134, 134, 134,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
-	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
-	134, 134, 134, 134, 134
+	134, 134, 134, 134, 134, 134, 134
 
 };
 
-static const flex_int16_t yy_chk[196] =
+static const flex_int16_t yy_chk[198] =
 {
 	0,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 10, 10, 11, 11, 23,
-	24, 65, 27, 35, 35, 10, 25, 65, 24, 23,
-	27, 25, 26, 23, 30, 26, 26, 25, 25, 33,
-	39, 40, 40, 30, 68, 137, 132, 128, 30, 33,
-	39, 10, 26, 67, 127, 122, 120, 119, 67, 115,
-	68, 135, 114, 135, 135, 136, 136, 113, 112, 111,
+	1, 1, 1, 1, 1, 1, 10, 10, 11, 11,
+	23, 24, 65, 27, 35, 35, 10, 25, 65, 24,
+	23, 27, 25, 26, 23, 30, 26, 26, 25, 25,
+	33, 39, 40, 40, 30, 68, 137, 132, 128, 30,
+	33, 39, 10, 26, 67, 127, 122, 120, 119, 67,
+	115, 68, 135, 114, 135, 135, 136, 136, 113, 112,
 
-	108, 106, 105, 101, 98, 97, 96, 95, 92, 88,
-	87, 83, 82, 77, 74, 73, 72, 71, 70, 69,
-	66, 64, 63, 62, 61, 60, 59, 58, 57, 55,
-	54, 52, 51, 50, 49, 48, 47, 46, 45, 44,
-	38, 37, 36, 34, 32, 31, 29, 28, 3, 134,
+	111, 108, 106, 105, 101, 98, 97, 96, 95, 92,
+	88, 87, 83, 82, 77, 74, 73, 72, 71, 70,
+	69, 66, 64, 63, 62, 61, 60, 59, 58, 57,
+	55, 54, 52, 51, 50, 49, 48, 47, 46, 45,
+	44, 38, 37, 36, 34, 32, 31, 29, 28, 3,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
 	134, 134, 134, 134, 134, 134, 134, 134, 134, 134,
-	134, 134, 134, 134, 134
+	134, 134, 134, 134, 134, 134, 134
 
 };
 
@@ -545,8 +545,9 @@ char* yytext;
 static int linepos = 1, columnpos = 1;
 
 #define SETLOCATION {yylloc.first_line = linepos; yylloc.first_column=columnpos; yylloc.last_line=linepos; columnpos += yyleng; yylloc.last_column=columnpos;}
-#line 541 "lex.yy.c"
+
 #line 542 "lex.yy.c"
+#line 543 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -762,10 +763,10 @@ YY_DECL
 	}
 
 	{
-#line 15 "pasm.flex"
+#line 17 "pasm.flex"
 
 
-#line 762 "lex.yy.c"
+#line 763 "lex.yy.c"
 
 		while (/*CONSTCOND*/1) /* loops until end-of-file is reached */
 		{
@@ -797,7 +798,7 @@ YY_DECL
 				}
 				yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 				++yy_cp;
-			} while (yy_base[yy_current_state] != 150);
+			} while (yy_base[yy_current_state] != 151);
 
 		yy_find_action:
 			yy_act = yy_accept[yy_current_state];
@@ -825,7 +826,7 @@ YY_DECL
 
 				case 1:
 					YY_RULE_SETUP
-	#line 17 "pasm.flex"
+	#line 19 "pasm.flex"
 					{
 						SETLOCATION;
 						return REG_A;
@@ -833,7 +834,7 @@ YY_DECL
 					YY_BREAK
 				case 2:
 					YY_RULE_SETUP
-	#line 18 "pasm.flex"
+	#line 20 "pasm.flex"
 					{
 						SETLOCATION;
 						return REG_X;
@@ -841,7 +842,7 @@ YY_DECL
 					YY_BREAK
 				case 3:
 					YY_RULE_SETUP
-	#line 19 "pasm.flex"
+	#line 21 "pasm.flex"
 					{
 						SETLOCATION;
 						return REG_Y;
@@ -849,7 +850,7 @@ YY_DECL
 					YY_BREAK
 				case 4:
 					YY_RULE_SETUP
-	#line 20 "pasm.flex"
+	#line 22 "pasm.flex"
 					{
 						SETLOCATION;
 						return REG_P;
@@ -857,7 +858,7 @@ YY_DECL
 					YY_BREAK
 				case 5:
 					YY_RULE_SETUP
-	#line 21 "pasm.flex"
+	#line 23 "pasm.flex"
 					{
 						SETLOCATION;
 						return REG_S;
@@ -865,7 +866,7 @@ YY_DECL
 					YY_BREAK
 				case 6:
 					YY_RULE_SETUP
-	#line 22 "pasm.flex"
+	#line 24 "pasm.flex"
 					{
 						SETLOCATION;
 						return SECTION;
@@ -873,7 +874,7 @@ YY_DECL
 					YY_BREAK
 				case 7:
 					YY_RULE_SETUP
-	#line 23 "pasm.flex"
+	#line 25 "pasm.flex"
 					{
 						SETLOCATION;
 						return ORIGIN;
@@ -881,7 +882,7 @@ YY_DECL
 					YY_BREAK
 				case 8:
 					YY_RULE_SETUP
-	#line 24 "pasm.flex"
+	#line 26 "pasm.flex"
 					{
 						SETLOCATION;
 						return DB;
@@ -889,7 +890,7 @@ YY_DECL
 					YY_BREAK
 				case 9:
 					YY_RULE_SETUP
-	#line 25 "pasm.flex"
+	#line 27 "pasm.flex"
 					{
 						SETLOCATION;
 						return DW;
@@ -897,7 +898,7 @@ YY_DECL
 					YY_BREAK
 				case 10:
 					YY_RULE_SETUP
-	#line 26 "pasm.flex"
+	#line 28 "pasm.flex"
 					{
 						SETLOCATION;
 						return ZP;
@@ -905,7 +906,7 @@ YY_DECL
 					YY_BREAK
 				case 11:
 					YY_RULE_SETUP
-	#line 28 "pasm.flex"
+	#line 30 "pasm.flex"
 					{
 						SETLOCATION;
 						return MOV;
@@ -913,7 +914,7 @@ YY_DECL
 					YY_BREAK
 				case 12:
 					YY_RULE_SETUP
-	#line 29 "pasm.flex"
+	#line 31 "pasm.flex"
 					{
 						SETLOCATION;
 						return JMP;
@@ -921,7 +922,7 @@ YY_DECL
 					YY_BREAK
 				case 13:
 					YY_RULE_SETUP
-	#line 30 "pasm.flex"
+	#line 32 "pasm.flex"
 					{
 						SETLOCATION;
 						return NOP;
@@ -929,7 +930,7 @@ YY_DECL
 					YY_BREAK
 				case 14:
 					YY_RULE_SETUP
-	#line 31 "pasm.flex"
+	#line 33 "pasm.flex"
 					{
 						SETLOCATION;
 						return NUM;
@@ -937,7 +938,7 @@ YY_DECL
 					YY_BREAK
 				case 15:
 					YY_RULE_SETUP
-	#line 34 "pasm.flex"
+	#line 36 "pasm.flex"
 					{
 						SETLOCATION;
 						yylval.numval = atoi(yytext);
@@ -946,7 +947,7 @@ YY_DECL
 					YY_BREAK
 				case 16:
 					YY_RULE_SETUP
-	#line 35 "pasm.flex"
+	#line 37 "pasm.flex"
 					{
 						SETLOCATION;
 						yylval.numval = (int)strtol(yytext, NULL, 16);
@@ -955,7 +956,7 @@ YY_DECL
 					YY_BREAK
 				case 17:
 					YY_RULE_SETUP
-	#line 36 "pasm.flex"
+	#line 38 "pasm.flex"
 					{
 						SETLOCATION;
 						return ADDC;
@@ -963,7 +964,7 @@ YY_DECL
 					YY_BREAK
 				case 18:
 					YY_RULE_SETUP
-	#line 37 "pasm.flex"
+	#line 39 "pasm.flex"
 					{
 						SETLOCATION;
 						return AND;
@@ -971,7 +972,7 @@ YY_DECL
 					YY_BREAK
 				case 19:
 					YY_RULE_SETUP
-	#line 38 "pasm.flex"
+	#line 40 "pasm.flex"
 					{
 						SETLOCATION;
 						return BIT;
@@ -979,7 +980,7 @@ YY_DECL
 					YY_BREAK
 				case 20:
 					YY_RULE_SETUP
-	#line 39 "pasm.flex"
+	#line 41 "pasm.flex"
 					{
 						SETLOCATION;
 						return BRK;
@@ -987,7 +988,7 @@ YY_DECL
 					YY_BREAK
 				case 21:
 					YY_RULE_SETUP
-	#line 40 "pasm.flex"
+	#line 42 "pasm.flex"
 					{
 						SETLOCATION;
 						return CALL;
@@ -995,7 +996,7 @@ YY_DECL
 					YY_BREAK
 				case 22:
 					YY_RULE_SETUP
-	#line 41 "pasm.flex"
+	#line 43 "pasm.flex"
 					{
 						SETLOCATION;
 						return CLR;
@@ -1003,7 +1004,7 @@ YY_DECL
 					YY_BREAK
 				case 23:
 					YY_RULE_SETUP
-	#line 42 "pasm.flex"
+	#line 44 "pasm.flex"
 					{
 						SETLOCATION;
 						return CMP;
@@ -1011,7 +1012,7 @@ YY_DECL
 					YY_BREAK
 				case 24:
 					YY_RULE_SETUP
-	#line 43 "pasm.flex"
+	#line 45 "pasm.flex"
 					{
 						SETLOCATION;
 						return INC;
@@ -1019,7 +1020,7 @@ YY_DECL
 					YY_BREAK
 				case 25:
 					YY_RULE_SETUP
-	#line 44 "pasm.flex"
+	#line 46 "pasm.flex"
 					{
 						SETLOCATION;
 						return DEC;
@@ -1027,7 +1028,7 @@ YY_DECL
 					YY_BREAK
 				case 26:
 					YY_RULE_SETUP
-	#line 45 "pasm.flex"
+	#line 47 "pasm.flex"
 					{
 						SETLOCATION;
 						return OR;
@@ -1035,7 +1036,7 @@ YY_DECL
 					YY_BREAK
 				case 27:
 					YY_RULE_SETUP
-	#line 46 "pasm.flex"
+	#line 48 "pasm.flex"
 					{
 						SETLOCATION;
 						return PULL;
@@ -1043,7 +1044,7 @@ YY_DECL
 					YY_BREAK
 				case 28:
 					YY_RULE_SETUP
-	#line 47 "pasm.flex"
+	#line 49 "pasm.flex"
 					{
 						SETLOCATION;
 						return PUSH;
@@ -1051,7 +1052,7 @@ YY_DECL
 					YY_BREAK
 				case 29:
 					YY_RULE_SETUP
-	#line 48 "pasm.flex"
+	#line 50 "pasm.flex"
 					{
 						SETLOCATION;
 						return RET;
@@ -1059,7 +1060,7 @@ YY_DECL
 					YY_BREAK
 				case 30:
 					YY_RULE_SETUP
-	#line 49 "pasm.flex"
+	#line 51 "pasm.flex"
 					{
 						SETLOCATION;
 						return RETI;
@@ -1067,7 +1068,7 @@ YY_DECL
 					YY_BREAK
 				case 31:
 					YY_RULE_SETUP
-	#line 50 "pasm.flex"
+	#line 52 "pasm.flex"
 					{
 						SETLOCATION;
 						return ROL;
@@ -1075,7 +1076,7 @@ YY_DECL
 					YY_BREAK
 				case 32:
 					YY_RULE_SETUP
-	#line 51 "pasm.flex"
+	#line 53 "pasm.flex"
 					{
 						SETLOCATION;
 						return ROR;
@@ -1083,7 +1084,7 @@ YY_DECL
 					YY_BREAK
 				case 33:
 					YY_RULE_SETUP
-	#line 52 "pasm.flex"
+	#line 54 "pasm.flex"
 					{
 						SETLOCATION;
 						return SET;
@@ -1091,7 +1092,7 @@ YY_DECL
 					YY_BREAK
 				case 34:
 					YY_RULE_SETUP
-	#line 53 "pasm.flex"
+	#line 55 "pasm.flex"
 					{
 						SETLOCATION;
 						return TRB;
@@ -1099,7 +1100,7 @@ YY_DECL
 					YY_BREAK
 				case 35:
 					YY_RULE_SETUP
-	#line 54 "pasm.flex"
+	#line 56 "pasm.flex"
 					{
 						SETLOCATION;
 						return TSB;
@@ -1107,7 +1108,7 @@ YY_DECL
 					YY_BREAK
 				case 36:
 					YY_RULE_SETUP
-	#line 55 "pasm.flex"
+	#line 57 "pasm.flex"
 					{
 						SETLOCATION;
 						return XOR;
@@ -1115,7 +1116,7 @@ YY_DECL
 					YY_BREAK
 				case 37:
 					YY_RULE_SETUP
-	#line 56 "pasm.flex"
+	#line 58 "pasm.flex"
 					{
 						SETLOCATION;
 						return WAIT;
@@ -1123,7 +1124,7 @@ YY_DECL
 					YY_BREAK
 				case 38:
 					YY_RULE_SETUP
-	#line 57 "pasm.flex"
+	#line 59 "pasm.flex"
 					{
 						SETLOCATION;
 						return BR;
@@ -1131,7 +1132,7 @@ YY_DECL
 					YY_BREAK
 				case 39:
 					YY_RULE_SETUP
-	#line 58 "pasm.flex"
+	#line 60 "pasm.flex"
 					{
 						SETLOCATION;
 						return ASL;
@@ -1139,7 +1140,7 @@ YY_DECL
 					YY_BREAK
 				case 40:
 					YY_RULE_SETUP
-	#line 60 "pasm.flex"
+	#line 62 "pasm.flex"
 					{
 						SETLOCATION;
 						return CFLAG;
@@ -1147,7 +1148,7 @@ YY_DECL
 					YY_BREAK
 				case 41:
 					YY_RULE_SETUP
-	#line 61 "pasm.flex"
+	#line 63 "pasm.flex"
 					{
 						SETLOCATION;
 						return DFLAG;
@@ -1155,7 +1156,7 @@ YY_DECL
 					YY_BREAK
 				case 42:
 					YY_RULE_SETUP
-	#line 62 "pasm.flex"
+	#line 64 "pasm.flex"
 					{
 						SETLOCATION;
 						return IFLAG;
@@ -1163,7 +1164,7 @@ YY_DECL
 					YY_BREAK
 				case 43:
 					YY_RULE_SETUP
-	#line 63 "pasm.flex"
+	#line 65 "pasm.flex"
 					{
 						SETLOCATION;
 						return NFLAG;
@@ -1171,7 +1172,7 @@ YY_DECL
 					YY_BREAK
 				case 44:
 					YY_RULE_SETUP
-	#line 64 "pasm.flex"
+	#line 66 "pasm.flex"
 					{
 						SETLOCATION;
 						return VFLAG;
@@ -1179,7 +1180,7 @@ YY_DECL
 					YY_BREAK
 				case 45:
 					YY_RULE_SETUP
-	#line 65 "pasm.flex"
+	#line 67 "pasm.flex"
 					{
 						SETLOCATION;
 						return ZFLAG;
@@ -1187,7 +1188,7 @@ YY_DECL
 					YY_BREAK
 				case 46:
 					YY_RULE_SETUP
-	#line 67 "pasm.flex"
+	#line 69 "pasm.flex"
 					{
 						SETLOCATION;
 						return ':';
@@ -1195,7 +1196,7 @@ YY_DECL
 					YY_BREAK
 				case 47:
 					YY_RULE_SETUP
-	#line 68 "pasm.flex"
+	#line 70 "pasm.flex"
 					{
 						SETLOCATION;
 						return '=';
@@ -1203,7 +1204,7 @@ YY_DECL
 					YY_BREAK
 				case 48:
 					YY_RULE_SETUP
-	#line 69 "pasm.flex"
+	#line 71 "pasm.flex"
 					{
 						SETLOCATION;
 						return '+';
@@ -1211,7 +1212,7 @@ YY_DECL
 					YY_BREAK
 				case 49:
 					YY_RULE_SETUP
-	#line 70 "pasm.flex"
+	#line 72 "pasm.flex"
 					{
 						SETLOCATION;
 						return ',';
@@ -1219,7 +1220,7 @@ YY_DECL
 					YY_BREAK
 				case 50:
 					YY_RULE_SETUP
-	#line 71 "pasm.flex"
+	#line 73 "pasm.flex"
 					{
 						SETLOCATION;
 						return '[';
@@ -1227,7 +1228,7 @@ YY_DECL
 					YY_BREAK
 				case 51:
 					YY_RULE_SETUP
-	#line 72 "pasm.flex"
+	#line 74 "pasm.flex"
 					{
 						SETLOCATION;
 						return ']';
@@ -1235,7 +1236,7 @@ YY_DECL
 					YY_BREAK
 				case 52:
 					YY_RULE_SETUP
-	#line 73 "pasm.flex"
+	#line 75 "pasm.flex"
 					{
 						SETLOCATION;
 						return '-';
@@ -1243,7 +1244,7 @@ YY_DECL
 					YY_BREAK
 				case 53:
 					YY_RULE_SETUP
-	#line 74 "pasm.flex"
+	#line 76 "pasm.flex"
 					{
 						SETLOCATION;
 						return '*';
@@ -1251,7 +1252,7 @@ YY_DECL
 					YY_BREAK
 				case 54:
 					YY_RULE_SETUP
-	#line 77 "pasm.flex"
+	#line 79 "pasm.flex"
 					{
 						SETLOCATION; /*ignore comments*/
 					}
@@ -1259,7 +1260,7 @@ YY_DECL
 				case 55:
 					/* rule 55 can match eol */
 					YY_RULE_SETUP
-	#line 79 "pasm.flex"
+	#line 81 "pasm.flex"
 					{
 						SETLOCATION
 						linepos++;
@@ -1270,7 +1271,7 @@ YY_DECL
 					YY_BREAK
 				case 56:
 					YY_RULE_SETUP
-	#line 80 "pasm.flex"
+	#line 82 "pasm.flex"
 					{
 						SETLOCATION;
 						yylval.identval = mystrdup(yytext);
@@ -1279,10 +1280,10 @@ YY_DECL
 					YY_BREAK
 				case 57:
 					YY_RULE_SETUP
-	#line 84 "pasm.flex"
+	#line 85 "pasm.flex"
 					ECHO;
 					YY_BREAK
-	#line 1105 "lex.yy.c"
+	#line 1106 "lex.yy.c"
 				case YY_STATE_EOF(INITIAL):
 					yyterminate();
 
@@ -2289,4 +2290,4 @@ void yyfree(void* ptr)
 
 #define YYTABLES_NAME "yytables"
 
-#line 84 "pasm.flex"
+#line 85 "pasm.flex"
