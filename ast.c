@@ -107,6 +107,7 @@ line_node_t* newline_instruction0(opcode_t opcode, YYLTYPE loc)
 	retval->location = loc;
 	retval->opcode = opcode;
 	retval->arg1 = retval->arg2 = AT_NONE;
+	retval->expr1 = retval->expr2 = NULL;
 	return retval;
 }
 
@@ -117,6 +118,7 @@ line_node_t* newline_label_instruction0(char* ident, opcode_t opcode, YYLTYPE lo
 	retval->location = loc;
 	retval->opcode = opcode;
 	retval->arg1 = retval->arg2 = AT_NONE;
+	retval->expr1 = retval->expr2 = NULL;
 	retval->ident = ident;
 	return retval;
 }
@@ -130,6 +132,7 @@ line_node_t* newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYP
 	retval->arg1 = argn1.at_at;
 	retval->expr1 = argn1.at_expr;
 	retval->arg2 = AT_NONE;
+	retval->expr2 = NULL;
 	return retval;
 }
 
@@ -142,6 +145,7 @@ line_node_t* newline_label_instruction1(char* ident, opcode_t opcode, argument_n
 	retval->arg1 = argn1.at_at;
 	retval->expr1 = argn1.at_expr;
 	retval->arg2 = AT_NONE;
+	retval->expr2 = NULL;
 	retval->ident = ident;
 	return retval;
 }
@@ -327,7 +331,6 @@ void printexpression(expr_node_t* node)
 	{
 		switch (node->et)
 		{
-
 		case ET_NUM:
 			printf("EXPR: num, num=%d\n", node->num);
 			break;

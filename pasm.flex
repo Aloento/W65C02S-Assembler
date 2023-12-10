@@ -23,6 +23,7 @@ section  { SETLOCATION; return SECTION; }
 origin { SETLOCATION; return ORIGIN; }
 db  { SETLOCATION; return DB; }
 dw { SETLOCATION; return DW; }
+zp { SETLOCATION; return ZP; }
 
 mov { SETLOCATION; return MOV; }
 jmp { SETLOCATION; return JMP; }
@@ -31,6 +32,7 @@ num { SETLOCATION; return NUM; }
 
 
 [0-9]+ {SETLOCATION; yylval.numval = atoi(yytext); return NUM; }
+0[xX][0-9a-fA-F]+ {SETLOCATION; yylval.numval = (int)strtol(yytext, NULL, 16); return NUM; }
 addc { SETLOCATION; return ADDC; }
 and { SETLOCATION; return AND; }
 bit { SETLOCATION; return BIT; }
@@ -52,6 +54,15 @@ trb { SETLOCATION; return TRB; }
 tsb { SETLOCATION; return TSB; }
 xor { SETLOCATION; return XOR; }
 wait { SETLOCATION; return WAIT; }
+br { SETLOCATION; return BR; }
+asl { SETLOCATION; return ASL; }
+
+cflag { SETLOCATION; return CFLAG; }
+dflag { SETLOCATION; return DFLAG; }
+iflag { SETLOCATION; return IFLAG; }
+nflag { SETLOCATION; return NFLAG; }
+vflag { SETLOCATION; return VFLAG; }
+zflag { SETLOCATION; return ZFLAG; }
 
 ":"  { SETLOCATION; return ':';}
 "="  { SETLOCATION; return '=';}

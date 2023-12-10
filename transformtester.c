@@ -35,6 +35,12 @@ bool transform1()
 		switch (currentline->lt)
 		{
 		case LT_SECTION:
+			if (currentline->bytepos > 0xffff)
+			{
+				printf("Error: section too large.  %d line=%d'\n", currentline->bytepos,
+				       currentline->location.first_line);
+				return false;
+			}
 			current_bytepos = currentline->bytepos;
 			break;
 		case LT_LABEL:
@@ -49,10 +55,10 @@ bool transform1()
 				return false;
 			}
 			instruction_len = getmachinebytes(0, currentline->opcode, currentline->arg1, 0, currentline->arg2, 0,
-				result);
+			                                  result);
 			if (instruction_len < 1)
 			{
-				printf("Error: invalid opcode.  %d line=%d'\n", currentline->location.first_line, current_bytepos);
+				printf("Error: invalid opcode.  %d line=%d'\n", instruction_len, currentline->location.first_line);
 				return false;
 			}
 			currentline->bytepos = current_bytepos;
@@ -60,10 +66,10 @@ bool transform1()
 			break;
 		case LT_INSTRUCTION:
 			instruction_len = getmachinebytes(0, currentline->opcode, currentline->arg1, 0, currentline->arg2, 0,
-				result);
+			                                  result);
 			if (instruction_len < 1)
 			{
-				printf("Error: invalid opcode.  %d line=%d'\n", currentline->location.first_line, current_bytepos);
+				printf("Error: invalid opcode.  %d line=%d'\n", instruction_len, currentline->location.first_line);
 				return false;
 			}
 			currentline->bytepos = current_bytepos;
@@ -122,130 +128,130 @@ int evaluate_expression(expr_node_t* expr, int* val)
 		*val = expr->num;
 		return 0;
 	case ET_IDENT:
-	{
-		if (checksym(expr->ident))
 		{
-			*val = getsym(expr->ident);
+			if (checksym(expr->ident))
+			{
+				*val = getsym(expr->ident);
+				return 0;
+			}
+			return 2;
+		}
+	case ET_PLUS:
+		{
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = val1 + val2;
 			return 0;
 		}
-		return 2;
-	}
-	case ET_PLUS:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
-		{
-			return 1;
-		}
-		*val = val1 + val2;
-		return 0;
-	}
 	case ET_MINUS:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = val1 - val2;
+			return 0;
 		}
-		*val = val1 - val2;
-		return 0;
-	}
 	case ET_TIMES:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = val1 * val2;
+			return 0;
 		}
-		*val = val1 * val2;
-		return 0;
-	}
 	case ET_MODULO:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			if (val2 == 0)
+			{
+				return 3;
+			}
+			*val = val1 % val2;
+			return 0;
 		}
-		if (val2 == 0)
-		{
-			return 3;
-		}
-		*val = val1 % val2;
-		return 0;
-	}
 	case ET_DIVIDE:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			if (val2 == 0)
+			{
+				return 3;
+			}
+			*val = val1 / val2;
+			return 0;
 		}
-		if (val2 == 0)
-		{
-			return 3;
-		}
-		*val = val1 / val2;
-		return 0;
-	}
 	case ET_EQUAL:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = (val1 == val2);
+			return 0;
 		}
-		*val = (val1 == val2);
-		return 0;
-	}
 	case ET_NOT_EQUAL:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = (val1 != val2);
+			return 0;
 		}
-		*val = (val1 != val2);
-		return 0;
-	}
 	case ET_AND:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = (val1 && val2);
+			return 0;
 		}
-		*val = (val1 && val2);
-		return 0;
-	}
 	case ET_OR:
-	{
-		int val1, val2;
-		int ret1 = evaluate_expression(expr->left, &val1);
-		int ret2 = evaluate_expression(expr->right, &val2);
-		if (ret1 || ret2)
 		{
-			return 1;
+			int val1, val2;
+			int ret1 = evaluate_expression(expr->left, &val1);
+			int ret2 = evaluate_expression(expr->right, &val2);
+			if (ret1 || ret2)
+			{
+				return 1;
+			}
+			*val = (val1 || val2);
+			return 0;
 		}
-		*val = (val1 || val2);
-		return 0;
-	}
 	default:
 		break;
 	}
@@ -269,7 +275,7 @@ bool transform2()
 			if (checksym(currentline->ident))
 			{
 				printf("Error: variable is already defined.  %s line=%d'\n", currentline->ident,
-					currentline->location.first_line);
+				       currentline->location.first_line);
 				return false;
 			}
 			int val;
@@ -300,6 +306,7 @@ int main(int argc, char** argv)
 	if (transform1())
 	{
 		printf("Transformation 1 successful\n");
+		fflush(stdout);
 		printast(astroot);
 		printsymboltable();
 		if (transform2())

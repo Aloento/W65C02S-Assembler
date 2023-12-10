@@ -1,0 +1,182 @@
+
+Ben Eaters video series (optional, just in case
+you actually want to learn sometning):
+
+Ben Eater: Build a 65c02 based computer from scratch.
+
+https://github.com/bodri5/logic23
+
+
+During the exam you can use one (1) HANDWRITTEN
+A4 size cheatsheet. (It must be readable by me.)
+
+Consultations:
+
+Friday (14:00: logic consultation) 16:00
+Monday 14:00
+
+
+
+
+- What is the size of the address space of a 6502 CPU
+
+2**16  65536
+0x0000 smallest address
+0xffff largest address
+
+- Just after reset the value of the memory from fff0 is the folowing
+(everything is in hexadecimal):
+
+
+fff0:  ea ad fb ff 1a 8d 10 00   4c f1 ff aa f0 ff 00 00
+                                          ^^ 
+start:
+nop
+jumphere:
+mov a, [0xfffb] ;  a = 0xaa  = 170
+inc a           ;  a = 0xab  = 171 = 0b10101011
+mov [0x0010], a    ; write 0xab to [0x0010]
+jmp 0xfff1      ; jump into label "jumphere"
+
+
+mov destination, source
+
+
+What will be the value of the first byte that the CPU wants
+to write into memory?
+
+
+
+- Translate to machine code the following program:
+
+section text origin 0x8000
+start: mov x, 0x00
+       mov a, [var1 + x]
+loop:  inc a
+       mov [var1 + x], a
+       inc x
+       mov a, [var1 + x]
+       jmp loop
+
+section data origin 0x9000
+var1:   db 0x17  ; students don't like decimal to hexadecimal :(
+
+Solution
+
+w8000
+a2 00
+bd 34 12
+1a
+9d 00 90
+e8
+bd 00 90
+4c 05 80
+w9000
+17
+
+;
+;16+4+2+1  00010111
+;17
+; loop=8005
+- Some crazy student wired the 65c22 VIA in the following way:
+RS0->A3
+RS1->A5
+RS2->A1
+RS3->A6
+CS1->A13
+CS2B->A10
+
+What is the address of the DDRB, IRB/ORB, and IFR register?
+(Multiple solutions are possible.)
+
+Draw it on paper, then collect the bits...
+
+- Create a grammar that recognizes predicate logic.
+The tokens:
+VAR for variables like x, y, z
+PRED  for predicates like P Q R
+FORALL,  EXISTS  for the two quantifiers
+'/\', '\/',  '~', '=>', '<=>' conectives: and, or, not, implication, biconditional
+'(', ')'   parentheses
+
+vars : VAR  /*nonempty list of variables*/
+     | vars VAR
+
+
+expr: PRED vars    /*one or more variables after a predicate*/
+    | PRED
+    | expr '/\' expr
+    | expr '\/' expr
+    | expr '=>' expr
+    | expr '<=>' expr
+    | '~'  expr
+    | '('  expr ')'
+    | FORALL VAR expr
+    | EXISTS VAR expr
+
+
+Which of the tokens have semantic value? What are the types of these
+semantic values?
+
+VAR and PRED  have a semantic value of string
+
+Create the parse tree and the abstract syntax tree for the
+following input:
+
+forall x  exists y  P x => (  Q x y \/  Q y x )
+
+
+
+
+
+
+
+
+                  expr
+
+
+
+
+
+
+                                             
+                                                 expr
+                                             /    |     \
+                                          expr    |     expr
+                                        /    \    |
+                                       /    vars  |
+                        expr          /     / |   |
+                       |  vars       /   vars |   |
+                       |    |       /     |   |   |
+FORALL VAR EXISTS VAR PRED VAR => ( PRED VAR VAR \/ PRED VAR VAR )
+
+forall x  exists y  P x => (  Q x y \/  Q y x )
+
+
+
+
+
+- What are the main building blocks of our pasm assembler?
+What are their purpose?
+
+- Write an assembly subroutine, which
+receives 3 unsigned bytes in zp[6], zp[7] and zp[8],
+when returns, the largest number is stored in zp[6],
+the smallest number is stored in zp[7], the index
+of the largest number (0, 1, or 2) is stored in a,
+the index of the smallest is stored in x
+You can use y, zp[0], zp[1], zp[2] and zp[3] as temporary
+storage, if necessary.
+
+
+
+- Write an assembly subroutine, which
+receives a pointer to an array of unsigned bytes in zp[6], zp[7]
+and the size of this array in  zp[8],
+when returns, the largest number is stored in zp[4],
+the smallest number is stored in zp[5], the index
+of the largest number (0  ..  zp[7]-1) is stored in a,
+the index of the smallest is stored in x
+You can use y, zp[0], zp[1], zp[2] and zp[3] as temporary
+storage, if necessary.
+

@@ -39,7 +39,7 @@ typedef struct expr_node_t
 	expr_type_t et;
 	int num;
 	char* ident;
-	struct expr_node_t* left, * right; /*subexpressions*/
+	struct expr_node_t *left, *right; /*subexpressions*/
 } expr_node_t;
 
 typedef struct expr_linked_list
@@ -80,7 +80,7 @@ typedef struct line_node_t
 	char* ident; /*for labels and definitions*/
 	opcode_t opcode; /*for instructions*/
 	argument_type_t arg1, arg2;
-	expr_node_t* expr1, * expr2; /*for definitions and instructions*/
+	expr_node_t *expr1, *expr2; /*for definitions and instructions*/
 	/*for data, you need a linked list of expressions, write it yourself*/
 	expr_linked_list* linked_list;
 } line_node_t;
@@ -97,6 +97,7 @@ typedef lines_node_t* astroot_t;
 lines_node_t* addline(lines_node_t* oldlines, line_node_t* newline);
 lines_node_t* newlines();
 expr_node_t* newexpr_num(int num, YYLTYPE loc);
+expr_node_t* newexpr_ident(char* ident, YYLTYPE loc);
 expr_node_t* newexpr_binop(expr_type_t etype, expr_node_t* left, expr_node_t* right, YYLTYPE loc);
 line_node_t* newline_label(char* ident, YYLTYPE loc);
 line_node_t* newline_instruction0(opcode_t opcode, YYLTYPE loc);
@@ -105,6 +106,8 @@ line_node_t* newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYP
 line_node_t* newline_label_instruction1(char* ident, opcode_t opcode, argument_node_t argn1, YYLTYPE loc);
 line_node_t* newline_instruction2(opcode_t opcode, argument_node_t argn1, argument_node_t argn2, YYLTYPE loc);
 line_node_t* newline_label_instruction2(char* ident, opcode_t opcode, argument_node_t argn1, argument_node_t argn2,
-	YYLTYPE loc);
+                                        YYLTYPE loc);
+line_node_t* newline_definition(char* ident, expr_node_t* expr, YYLTYPE loc);
+line_node_t* newline_section(char* ident, int num, YYLTYPE loc);
 
 void printast(astroot_t root);

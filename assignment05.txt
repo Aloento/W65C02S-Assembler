@@ -1,0 +1,74 @@
+Deadline: ?
+
+
+Assignment 5
+Implement the code generation of the "Pécs Assembler 23"
+
+
+0. Finish everything from the previous assignments, that are
+needed for the transformations. Make sure, you have the
+latest versions from machinecodes.c/h and symboltable.c/h
+I added a function to print the actual symbol table, just in case
+you want to see, what is in it.
+
+1. Divide up the task, and assign the subtasks to group members.
+Document this in a file that you upload to the git. This must be
+the first upload. I will chechk, who commits what later, and
+distribute the points accordingly.
+
+2. After the second transformation the code generator also traverses
+the abstract syntax tree from the beginning.
+
+For a section line print "whhhh\n" where hhhh is the hexadecimal value
+of the number in the section.
+
+For an istruction or label_with_instruction, print the bytes of the
+instuction. These bytes can be determined with the  getmachinebytes
+function
+
+For data lines, just print the bytes in order, or the words
+in order (but be aware of the little endian byte order).
+
+Other lines can be ignored.
+
+Before calling getmachinebytes, the expressions must be evaluated.
+
+If some error occurs, print an error message and stop.
+(Possible errors: getmachinebytes returns an error, the evaluation
+of an expression is not succesful, either because of an undefined
+variable or division by zero.)
+
+3. Recognize flags in the grammar. The following new rules are needed
+in the grammar:
+
+argument :  CFLAG
+argument :  CFLAG '=' NUM
+
+(Also for nflag, vflag, zflag)
+
+In both cases, the argument type is AT_CFLAG, in the second case the
+expression for the argument must contain NUM.
+
+As a test, the output for pasmexample.asm should look like this:
+
+
+
+w8000
+ad 00 81
+8d 02 40
+8d 00 40
+1a
+4c 06 80
+w8100
+ff
+wfffc
+00 80
+
+and the symbol table after transformation 2:
+
+VIA_DDRB = 16386
+VIA_PORTB = 16384
+VIA_BASE = 16384
+var1 = 33024
+loop = 32774
+start = 32768
