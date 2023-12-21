@@ -1,0 +1,12 @@
+section text origin 67
+label1:
+mov a,x
+label2: mov [label1], a 
+label3:
+
+db 4,6
+dw 7,8
+
+var2 = 42
+var3 = label2 - 5
+var4 = label3 - (5 + 5)

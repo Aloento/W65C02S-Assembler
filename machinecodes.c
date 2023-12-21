@@ -26,8 +26,11 @@ static int writebranch(int bytepos, int num2, unsigned char result[3])
 {
 	if (0 <= bytepos && bytepos <= 0xffff && 0 <= num2 && num2 <= 0xffff)
 	{
-		int diff = bytepos - num2 - 2;
-		if (diff < -128 || 127 < diff) { return -5; }
+		int diff = num2 - (bytepos + 2);
+		if (diff < -128 || 127 < diff)
+		{
+			return -5;
+		}
 		result[1] = (diff + 0x100) % 0x100;
 		return 2;
 	}
@@ -62,21 +65,29 @@ static int writearith2(
 	{
 		switch (opcode)
 		{
-		case OP_ADDC: offset = 0x60;
+		case OP_ADDC:
+			offset = 0x60;
 			break;
-		case OP_SUBC: offset = 0xe0;
+		case OP_SUBC:
+			offset = 0xe0;
 			break;
-		case OP_AND: offset = 0x20;
+		case OP_AND:
+			offset = 0x20;
 			break;
-		case OP_OR: offset = 0x00;
+		case OP_OR:
+			offset = 0x00;
 			break;
-		case OP_XOR: offset = 0x40;
+		case OP_XOR:
+			offset = 0x40;
 			break;
-		case OP_CMP: offset = 0xc0;
+		case OP_CMP:
+			offset = 0xc0;
 			break;
-		case OP_MOV: offset = 0xa0;
+		case OP_MOV:
+			offset = 0xa0;
 			break;
-		default: return 0;
+		default:
+			return 0;
 		}
 	}
 	switch (arg2)
@@ -162,15 +173,20 @@ static int writearith1(
 		}
 		offset = 0xc0;
 		break;
-	case OP_ROR: offset = 0x60;
+	case OP_ROR:
+		offset = 0x60;
 		break;
-	case OP_ROL: offset = 0x20;
+	case OP_ROL:
+		offset = 0x20;
 		break;
-	case OP_ASL: offset = 0x00;
+	case OP_ASL:
+		offset = 0x00;
 		break;
-	case OP_LSR: offset = 0x40;
+	case OP_LSR:
+		offset = 0x40;
 		break;
-	default: return 0;
+	default:
+		return 0;
 	}
 	switch (arg1)
 	{
@@ -193,7 +209,6 @@ static int writearith1(
 		return -1;
 	}
 }
-
 
 static int writemov(
 	argument_type_t arg1, int num1,
@@ -316,7 +331,10 @@ static int writemov(
 	}
 	if (arg2 == AT_IMMEDIATE)
 	{
-		if (num2 != 0) { return -4; } /*only zero can be stored to memory*/
+		if (num2 != 0)
+		{
+			return -4;
+		} /*only zero can be stored to memory*/
 		switch (arg1)
 		{
 		case AT_ABSOLUTE:
@@ -337,7 +355,6 @@ static int writemov(
 	}
 	return -1;
 }
-
 
 /**
 Computes the machine code bytes for an instruction
@@ -370,7 +387,8 @@ int getmachinebytes(int bytepos,
 	case OP_MOV:
 		return writemov(arg1, num1, arg2, num2, result);
 	case OP_PULL:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_REG_A:
@@ -389,7 +407,8 @@ int getmachinebytes(int bytepos,
 			return -1;
 		}
 	case OP_PUSH:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_REG_A:
@@ -408,7 +427,8 @@ int getmachinebytes(int bytepos,
 			return -1;
 		}
 	case OP_SET:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_CFLAG:
@@ -424,7 +444,8 @@ int getmachinebytes(int bytepos,
 			return -1;
 		}
 	case OP_CLR:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_CFLAG:
@@ -456,7 +477,6 @@ int getmachinebytes(int bytepos,
 	case OP_ASL:
 	case OP_LSR:
 		return writearith1(opcode, arg1, num1, arg2, num2, result);
-
 
 	case OP_CMP:
 		switch (arg1)
@@ -496,7 +516,8 @@ int getmachinebytes(int bytepos,
 		}
 
 	case OP_BIT:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_ABSOLUTE:
@@ -519,7 +540,8 @@ int getmachinebytes(int bytepos,
 		}
 
 	case OP_TRB:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_ABSOLUTE:
@@ -533,7 +555,8 @@ int getmachinebytes(int bytepos,
 		}
 
 	case OP_TSB:
-		if (arg2 != AT_NONE) return -2; /*one argument instruction*/
+		if (arg2 != AT_NONE)
+			return -2; /*one argument instruction*/
 		switch (arg1)
 		{
 		case AT_ABSOLUTE:
@@ -546,15 +569,23 @@ int getmachinebytes(int bytepos,
 			return -1;
 		}
 
-
 	case OP_NOP:
-		if (arg1 != AT_NONE) { return -1; }
-		if (arg2 != AT_NONE) { return -2; }
+		if (arg1 != AT_NONE)
+		{
+			return -1;
+		}
+		if (arg2 != AT_NONE)
+		{
+			return -2;
+		}
 		result[0] = 0xea;
 		return 1;
 
 	case OP_JMP:
-		if (arg2 != AT_NONE) { return -2; }
+		if (arg2 != AT_NONE)
+		{
+			return -2;
+		}
 		switch (arg1)
 		{
 		case AT_IMMEDIATE:
@@ -571,7 +602,10 @@ int getmachinebytes(int bytepos,
 		}
 
 	case OP_BR:
-		if (arg2 != AT_IMMEDIATE) { return -2; }
+		if (arg2 != AT_IMMEDIATE)
+		{
+			return -2;
+		}
 		switch (arg1)
 		{
 		case AT_NFLAG:
@@ -621,29 +655,50 @@ int getmachinebytes(int bytepos,
 			return -1;
 		}
 	case OP_CALL:
-		if (arg1 != AT_IMMEDIATE) { return -1; }
-		if (arg2 != AT_NONE) { return -2; }
+		if (arg1 != AT_IMMEDIATE)
+		{
+			return -1;
+		}
+		if (arg2 != AT_NONE)
+		{
+			return -2;
+		}
 		result[0] = 0x20;
 		return writeword(num1, -3, result);
 	case OP_RET:
-		if (arg1 != AT_NONE || arg2 != AT_NONE) { return -1; }
+		if (arg1 != AT_NONE || arg2 != AT_NONE)
+		{
+			return -1;
+		}
 		result[0] = 0x60;
 		return 1;
 	case OP_RETI:
-		if (arg1 != AT_NONE || arg2 != AT_NONE) { return -1; }
+		if (arg1 != AT_NONE || arg2 != AT_NONE)
+		{
+			return -1;
+		}
 		result[0] = 0x40;
 		return 1;
 	case OP_BRK:
-		if (arg1 != AT_NONE || arg2 != AT_NONE) { return -1; }
+		if (arg1 != AT_NONE || arg2 != AT_NONE)
+		{
+			return -1;
+		}
 		result[0] = 0x00;
 		result[1] = 0xea;
 		return 2;
 	case OP_STOP:
-		if (arg1 != AT_NONE || arg2 != AT_NONE) { return -1; }
+		if (arg1 != AT_NONE || arg2 != AT_NONE)
+		{
+			return -1;
+		}
 		result[0] = 0xdb;
 		return 1;
 	case OP_WAIT:
-		if (arg1 != AT_NONE || arg2 != AT_NONE) { return -1; }
+		if (arg1 != AT_NONE || arg2 != AT_NONE)
+		{
+			return -1;
+		}
 		result[0] = 0xcb;
 		return 1;
 	}

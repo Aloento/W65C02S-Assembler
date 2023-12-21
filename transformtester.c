@@ -1,8 +1,8 @@
+#include <stdio.h>
 #include "ast.h"
 #include "pasm.tab.h"
-#include "symboltable.h"
 #include <stdbool.h>
-#include <stdio.h>
+#include "symboltable.h"
 
 astroot_t astroot;
 
@@ -26,62 +26,70 @@ bool transform1()
 	int instruction_len;
 	unsigned char result[3];
 	int numexprs;
-	expr_linked_list* curexpr;
+	expr_list* curexpr;
 	lines_node_t* currentlines = astroot;
-
 	while (currentlines != NULL)
 	{
 		line_node_t* currentline = currentlines->currentline;
 		switch (currentline->lt)
 		{
 		case LT_SECTION:
-			if (currentline->bytepos > 0xffff)
+			current_bytepos = currentline->bytepos;
+			if (current_bytepos > 65535)
 			{
-				printf("Error: section too large.  %d line=%d'\n", currentline->bytepos,
-				       currentline->location.first_line);
+				printf("Error: section too large.  %d line=%d'\n", currentline->location.first_line, current_bytepos);
 				return false;
 			}
-			current_bytepos = currentline->bytepos;
+
+
 			break;
+
 		case LT_LABEL:
 			if (label_handler(currentline, current_bytepos))
 			{
 				return false;
 			}
 			break;
+
 		case LT_LABEL_PLUS_INSTRUCTION:
 			if (label_handler(currentline, current_bytepos))
 			{
 				return false;
 			}
+			instruction_len = 0;
+
 			instruction_len = getmachinebytes(0, currentline->opcode, currentline->arg1, 0, currentline->arg2, 0,
 			                                  result);
 			if (instruction_len < 1)
 			{
-				printf("Error: invalid opcode.  %d line=%d'\n", instruction_len, currentline->location.first_line);
+				printf("Error: invalid opcode.  %d line=%d'\n", currentline->location.first_line, current_bytepos);
 				return false;
 			}
 			currentline->bytepos = current_bytepos;
 			current_bytepos += instruction_len;
 			break;
+
 		case LT_INSTRUCTION:
+			instruction_len = 0;
+
 			instruction_len = getmachinebytes(0, currentline->opcode, currentline->arg1, 0, currentline->arg2, 0,
 			                                  result);
 			if (instruction_len < 1)
 			{
-				printf("Error: invalid opcode.  %d line=%d'\n", instruction_len, currentline->location.first_line);
+				printf("Error: invalid opcode.  %d line=%d'\n", currentline->location.first_line, current_bytepos);
 				return false;
 			}
 			currentline->bytepos = current_bytepos;
 			current_bytepos += instruction_len;
 			break;
+
 		case LT_LABEL_PLUS_DB:
 			if (label_handler(currentline, current_bytepos))
 			{
 				return false;
 			}
 			numexprs = 0;
-			curexpr = currentline->linked_list;
+			curexpr = currentline->elist;
 			while (curexpr != NULL)
 			{
 				numexprs++;
@@ -90,9 +98,10 @@ bool transform1()
 			currentline->bytepos = current_bytepos;
 			current_bytepos += numexprs;
 			break;
+
 		case LT_DB:
 			numexprs = 0;
-			curexpr = currentline->linked_list;
+			curexpr = currentline->elist;
 			while (curexpr != NULL)
 			{
 				numexprs++;
@@ -101,6 +110,34 @@ bool transform1()
 			currentline->bytepos = current_bytepos;
 			current_bytepos += numexprs;
 			break;
+		case LT_LABEL_PLUS_DW:
+			if (label_handler(currentline, current_bytepos))
+			{
+				return false;
+			}
+			numexprs = 0;
+			curexpr = currentline->elist;
+			while (curexpr != NULL)
+			{
+				numexprs++;
+				curexpr = curexpr->next;
+			}
+			currentline->bytepos = current_bytepos;
+			current_bytepos += numexprs;
+			break;
+
+		case LT_DW:
+			numexprs = 0;
+			curexpr = currentline->elist;
+			while (curexpr != NULL)
+			{
+				numexprs++;
+				curexpr = curexpr->next;
+			}
+			currentline->bytepos = current_bytepos;
+			current_bytepos += numexprs;
+			break;
+
 		default:
 			break;
 		}
@@ -112,9 +149,9 @@ bool transform1()
 
 /* This function evaluates an expression and puts the result into val.
    Return value: 0: success
-				 1: nul pointer
-				 2: unknown variable
-				 3: division by zero
+                 1: null pointer
+                 2: unknown variable
+                 3: division by zero
 */
 int evaluate_expression(expr_node_t* expr, int* val)
 {
@@ -127,6 +164,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 	case ET_NUM:
 		*val = expr->num;
 		return 0;
+		break;
 	case ET_IDENT:
 		{
 			if (checksym(expr->ident))
@@ -136,6 +174,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			}
 			return 2;
 		}
+		break;
 	case ET_PLUS:
 		{
 			int val1, val2;
@@ -148,6 +187,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = val1 + val2;
 			return 0;
 		}
+		break;
 	case ET_MINUS:
 		{
 			int val1, val2;
@@ -160,6 +200,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = val1 - val2;
 			return 0;
 		}
+		break;
 	case ET_TIMES:
 		{
 			int val1, val2;
@@ -172,6 +213,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = val1 * val2;
 			return 0;
 		}
+		break;
 	case ET_MODULO:
 		{
 			int val1, val2;
@@ -188,7 +230,8 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = val1 % val2;
 			return 0;
 		}
-	case ET_DIVIDE:
+		break;
+	case ET_DIVISON:
 		{
 			int val1, val2;
 			int ret1 = evaluate_expression(expr->left, &val1);
@@ -204,7 +247,9 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = val1 / val2;
 			return 0;
 		}
-	case ET_EQUAL:
+		break;
+
+	case ET_EQUALS:
 		{
 			int val1, val2;
 			int ret1 = evaluate_expression(expr->left, &val1);
@@ -216,6 +261,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = (val1 == val2);
 			return 0;
 		}
+		break;
 	case ET_NOT_EQUAL:
 		{
 			int val1, val2;
@@ -228,6 +274,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = (val1 != val2);
 			return 0;
 		}
+		break;
 	case ET_AND:
 		{
 			int val1, val2;
@@ -240,6 +287,8 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = (val1 && val2);
 			return 0;
 		}
+
+		break;
 	case ET_OR:
 		{
 			int val1, val2;
@@ -252,6 +301,7 @@ int evaluate_expression(expr_node_t* expr, int* val)
 			*val = (val1 || val2);
 			return 0;
 		}
+		break;
 	default:
 		break;
 	}
@@ -296,6 +346,124 @@ bool transform2()
 	return true;
 }
 
+bool transform3()
+{
+	lines_node_t* currentlines = astroot;
+	while (currentlines != NULL)
+	{
+		line_node_t* currentline = currentlines->currentline;
+
+		switch (currentline->lt)
+		{
+		case LT_SECTION:
+			printf("w%x\n", currentline->bytepos);
+			break;
+
+		case LT_LABEL_PLUS_INSTRUCTION:
+		case LT_INSTRUCTION:
+			{
+				unsigned char result[3];
+				int argval1;
+				if (currentline->expr1)
+				{
+					int err1 = evaluate_expression(currentline->expr1, &argval1);
+					if (err1)
+					{
+						printf("Error: evaluating expression.  %d line=%d'\n", err1, currentline->location.first_line);
+						return false;
+					}
+				}
+				else
+				{
+					argval1 = 0;
+				}
+				int argval2;
+				if (currentline->expr2)
+				{
+					int err2 = evaluate_expression(currentline->expr2, &argval2);
+					if (err2)
+					{
+						printf("Error: evaluating expression.  %d line=%d'\n", err2, currentline->location.first_line);
+						return false;
+					}
+				}
+				else
+				{
+					argval2 = 0;
+				}
+				int instruction_len = getmachinebytes(currentline->bytepos, currentline->opcode, currentline->arg1,
+				                                      argval1, currentline->arg2, argval2, result);
+
+				if (instruction_len < 1)
+				{
+					printf("Error: invalid opcode.  %d line=%d'\n", currentline->location.first_line,
+					       currentline->bytepos);
+					return false;
+				}
+
+				for (int i = 0; i < instruction_len; ++i)
+				{
+					printf("%02x ", result[i]);
+				}
+				printf("\n");
+			}
+			break;
+
+		case LT_LABEL_PLUS_DB:
+		case LT_DB:
+			{
+				expr_list* curexpr = currentline->elist;
+				while (curexpr != NULL)
+				{
+					int val;
+					int ret = evaluate_expression(curexpr->expr, &val);
+
+					if (ret)
+					{
+						printf("Error: evaluating expression.  %d line=%d'\n", ret, currentline->location.first_line);
+						return false;
+					}
+
+					printf("%02x ", val & 0xFF); // Output bytes for DB line
+					curexpr = curexpr->next;
+				}
+				printf("\n");
+			}
+			break;
+
+		case LT_LABEL_PLUS_DW:
+		case LT_DW:
+			{
+				expr_list* curexpr = currentline->elist;
+				while (curexpr != NULL)
+				{
+					int val;
+					int ret = evaluate_expression(curexpr->expr, &val);
+
+					if (ret)
+					{
+						printf("Error: evaluating expression.  %d line=%d'\n", ret, currentline->location.first_line);
+						return false;
+					}
+
+					printf("%02x %02x ", (val & 0xFF), ((val >> 8) & 0xFF)); // Output words for DW line (little-endian)
+					curexpr = curexpr->next;
+				}
+				printf("\n");
+			}
+			break;
+
+		default:
+			break;
+		}
+
+		currentlines = currentlines->nextlines;
+	}
+
+	return true;
+}
+
+
 int main(int argc, char** argv)
 {
 	int retval;
@@ -306,7 +474,6 @@ int main(int argc, char** argv)
 	if (transform1())
 	{
 		printf("Transformation 1 successful\n");
-		fflush(stdout);
 		printast(astroot);
 		printsymboltable();
 		if (transform2())
@@ -314,7 +481,12 @@ int main(int argc, char** argv)
 			printf("Transformation 2 successful\n");
 			printast(astroot);
 			printsymboltable();
+			if (transform3())
+			{
+				printf("Transformation 3 successful\n");
+			}
 		}
 	}
+
 	return 0;
 }

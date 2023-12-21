@@ -48,127 +48,84 @@ extern int yydebug;
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-
-enum yytokentype
-{
-	YYEMPTY = -2,
-	YYEOF = 0,
-	/* "end of file"  */
-	YYerror = 256,
-	/* error  */
-	YYUNDEF = 257,
-	/* "invalid token"  */
-	NUM = 258,
-	/* NUM  */
-	IDENT = 259,
-	/* IDENT  */
-	REG_A = 260,
-	/* REG_A  */
-	REG_X = 261,
-	/* REG_X  */
-	REG_Y = 262,
-	/* REG_Y  */
-	REG_P = 263,
-	/* REG_P  */
-	REG_S = 264,
-	/* REG_S  */
-	LF = 265,
-	/* LF  */
-	SECTION = 266,
-	/* SECTION  */
-	ORIGIN = 267,
-	/* ORIGIN  */
-	DB = 268,
-	/* DB  */
-	DW = 269,
-	/* DW  */
-	ZP = 270,
-	/* ZP  */
-	MOV = 271,
-	/* MOV  */
-	JMP = 272,
-	/* JMP  */
-	INC = 273,
-	/* INC  */
-	ADDC = 274,
-	/* ADDC  */
-	AND = 275,
-	/* AND  */
-	ASL = 276,
-	/* ASL  */
-	BIT = 277,
-	/* BIT  */
-	BR = 278,
-	/* BR  */
-	BRK = 279,
-	/* BRK  */
-	CALL = 280,
-	/* CALL  */
-	CLR = 281,
-	/* CLR  */
-	CMP = 282,
-	/* CMP  */
-	DEC = 283,
-	/* DEC  */
-	OR = 284,
-	/* OR  */
-	PULL = 285,
-	/* PULL  */
-	PUSH = 286,
-	/* PUSH  */
-	RET = 287,
-	/* RET  */
-	RETI = 288,
-	/* RETI  */
-	ROL = 289,
-	/* ROL  */
-	ROR = 290,
-	/* ROR  */
-	SET = 291,
-	/* SET  */
-	TRB = 292,
-	/* TRB  */
-	TSB = 293,
-	/* TSB  */
-	XOR = 294,
-	/* XOR  */
-	WAIT = 295,
-	/* WAIT  */
-	NOP = 296,
-	/* NOP  */
-	CFLAG = 297,
-	/* CFLAG  */
-	DFLAG = 298,
-	/* DFLAG  */
-	IFLAG = 299,
-	/* IFLAG  */
-	NFLAG = 300,
-	/* NFLAG  */
-	VFLAG = 301,
-	/* VFLAG  */
-	ZFLAG = 302 /* ZFLAG  */
-};
-
-typedef enum yytokentype yytoken_kind_t;
+  enum yytokentype
+  {
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    NUM = 258,                     /* NUM  */
+    IDENT = 259,                   /* IDENT  */
+    REG_Y = 260,                   /* REG_Y  */
+    REG_S = 261,                   /* REG_S  */
+    REG_X = 262,                   /* REG_X  */
+    REG_P = 263,                   /* REG_P  */
+    REG_A = 264,                   /* REG_A  */
+    LF = 265,                      /* LF  */
+    CFLAG = 266,                   /* CFLAG  */
+    DFLAG = 267,                   /* DFLAG  */
+    IFLAG = 268,                   /* IFLAG  */
+    NFLAG = 269,                   /* NFLAG  */
+    VFLAG = 270,                   /* VFLAG  */
+    ZFLAG = 271,                   /* ZFLAG  */
+    ZP = 272,                      /* ZP  */
+    OTHER = 273,                   /* OTHER  */
+    MOV = 274,                     /* MOV  */
+    JMP = 275,                     /* JMP  */
+    NOP = 276,                     /* NOP  */
+    BRK = 277,                     /* BRK  */
+    ADDC = 278,                    /* ADDC  */
+    ADD = 279,                     /* ADD  */
+    ASL = 280,                     /* ASL  */
+    BR = 281,                      /* BR  */
+    CALL = 282,                    /* CALL  */
+    DEC = 283,                     /* DEC  */
+    INC = 284,                     /* INC  */
+    OR = 285,                      /* OR  */
+    PULL = 286,                    /* PULL  */
+    PUSH = 287,                    /* PUSH  */
+    RET = 288,                     /* RET  */
+    RETI = 289,                    /* RETI  */
+    ROL = 290,                     /* ROL  */
+    ROR = 291,                     /* ROR  */
+    SET = 292,                     /* SET  */
+    STOP = 293,                    /* STOP  */
+    CLR = 294,                     /* CLR  */
+    SUBC = 295,                    /* SUBC  */
+    TRB = 296,                     /* TRB  */
+    TSB = 297,                     /* TSB  */
+    XOR = 298,                     /* XOR  */
+    WAIT = 299,                    /* WAIT  */
+    DB = 300,                      /* DB  */
+    DW = 301,                      /* DW  */
+    SECTION = 302,                 /* SECTION  */
+    ORIGIN = 303,                  /* ORIGIN  */
+    AND = 304,                     /* AND  */
+    BIT = 305,                     /* BIT  */
+    LSR = 306,                     /* LSR  */
+    CMP = 307                      /* CMP  */
+  };
+  typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "pasm.y"
+#line 25 "pasm.y"
 
-	int numval;
-	char* identval;
-	lines_node_t* linesnode;
-	line_node_t* linenode;
-	opcode_t opcode_value;
-	expr_node_t* expr_value;
-	argument_node_t arg_value;
+  int numval;
+  char *identval;
+  lines_node_t *linesnode;
+  line_node_t *linenode;
+  opcode_t opcode_value;
+  expr_node_t *expr_value;
+  argument_node_t *argument_value;
+  expr_list *elist;
 
-#line 121 "pasm.tab.h"
+#line 127 "pasm.tab.h"
+
 };
-
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -179,10 +136,10 @@ typedef union YYSTYPE YYSTYPE;
 typedef struct YYLTYPE YYLTYPE;
 struct YYLTYPE
 {
-	int first_line;
-	int first_column;
-	int last_line;
-	int last_column;
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
 };
 # define YYLTYPE_IS_DECLARED 1
 # define YYLTYPE_IS_TRIVIAL 1
@@ -192,7 +149,7 @@ struct YYLTYPE
 extern YYSTYPE yylval;
 extern YYLTYPE yylloc;
 
-int yyparse(void);
+int yyparse (void);
 
 
 #endif /* !YY_YY_PASM_TAB_H_INCLUDED  */

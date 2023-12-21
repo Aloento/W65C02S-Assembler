@@ -1,9 +1,12 @@
+#ifndef AST_H
+#define AST_H
+
 #include "machinecodes.h"
 #include <stddef.h>
 #include <stdlib.h>
 
 /* Location type.  */
-#if !defined YYLTYPE && !defined YYLTYPE_IS_DECLARED
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
 typedef struct YYLTYPE YYLTYPE;
 
 struct YYLTYPE
@@ -24,14 +27,13 @@ typedef enum
 	ET_IDENT,
 	ET_PLUS,
 	ET_MINUS,
-	ET_MULTIPLY,
-	ET_DIVIDE,
 	ET_TIMES,
 	ET_MODULO,
-	ET_EQUAL,
+	ET_DIVISON,
+	ET_EQUALS,
 	ET_NOT_EQUAL,
 	ET_AND,
-	ET_OR,
+	ET_OR
 } expr_type_t;
 
 typedef struct expr_node_t
@@ -42,17 +44,15 @@ typedef struct expr_node_t
 	struct expr_node_t *left, *right; /*subexpressions*/
 } expr_node_t;
 
-typedef struct expr_linked_list
+typedef struct expr_list
 {
 	expr_node_t* expr;
-	struct expr_linked_list* next;
-} expr_linked_list;
+	struct expr_list* next;
+} expr_list;
 
 typedef enum
 {
 	LT_LABEL,
-	LT_LABEL_DB,
-	LT_LABEL_DW,
 	/* line with a label*/
 	LT_INSTRUCTION,
 	/* instruction */
@@ -65,12 +65,6 @@ typedef enum
 	LT_LABEL_PLUS_DW
 } line_type_t;
 
-typedef struct
-{
-	argument_type_t at_at;
-	expr_node_t* at_expr;
-} argument_node_t;
-
 typedef struct line_node_t
 {
 	line_type_t lt;
@@ -81,9 +75,14 @@ typedef struct line_node_t
 	opcode_t opcode; /*for instructions*/
 	argument_type_t arg1, arg2;
 	expr_node_t *expr1, *expr2; /*for definitions and instructions*/
-	/*for data, you need a linked list of expressions, write it yourself*/
-	expr_linked_list* linked_list;
+	expr_list* elist; /*for db and dw*/
 } line_node_t;
+
+typedef struct argument_node_t
+{
+	argument_type_t at;
+	expr_node_t* expr;
+} argument_node_t;
 
 typedef struct lines_node_t
 {
@@ -96,18 +95,21 @@ typedef lines_node_t* astroot_t;
 
 lines_node_t* addline(lines_node_t* oldlines, line_node_t* newline);
 lines_node_t* newlines();
-expr_node_t* newexpr_num(int num, YYLTYPE loc);
-expr_node_t* newexpr_ident(char* ident, YYLTYPE loc);
-expr_node_t* newexpr_binop(expr_type_t etype, expr_node_t* left, expr_node_t* right, YYLTYPE loc);
+
 line_node_t* newline_label(char* ident, YYLTYPE loc);
-line_node_t* newline_instruction0(opcode_t opcode, YYLTYPE loc);
-line_node_t* newline_label_instruction0(char* ident, opcode_t opcode, YYLTYPE loc);
-line_node_t* newline_instruction1(opcode_t opcode, argument_node_t argn1, YYLTYPE loc);
-line_node_t* newline_label_instruction1(char* ident, opcode_t opcode, argument_node_t argn1, YYLTYPE loc);
-line_node_t* newline_instruction2(opcode_t opcode, argument_node_t argn1, argument_node_t argn2, YYLTYPE loc);
-line_node_t* newline_label_instruction2(char* ident, opcode_t opcode, argument_node_t argn1, argument_node_t argn2,
-                                        YYLTYPE loc);
-line_node_t* newline_definition(char* ident, expr_node_t* expr, YYLTYPE loc);
+line_node_t* newline_instruction(opcode_t opcode, argument_type_t arg1, argument_type_t arg2, expr_node_t* expr1,
+                                 expr_node_t* expr2, YYLTYPE loc);
 line_node_t* newline_section(char* ident, int num, YYLTYPE loc);
+line_node_t* newline_definition(char* ident, expr_node_t* expr, YYLTYPE loc);
+line_node_t* newline_label_instruction(char* ident, opcode_t opcode, argument_type_t arg1, argument_type_t arg2,
+                                       expr_node_t* expr1, expr_node_t* expr2, YYLTYPE loc);
+line_node_t* newline_label_db(char* ident, expr_list* elist, YYLTYPE loc);
+line_node_t* newline_label_dw(char* ident, expr_list* elist, YYLTYPE loc);
+line_node_t* newline_db(expr_list* elist, YYLTYPE loc);
+line_node_t* newline_dw(expr_list* elist, YYLTYPE loc);
+expr_list* dbarg_append(expr_list* elist, expr_node_t* expr);
+expr_list* new_dbarg(expr_node_t* expr);
 
 void printast(astroot_t root);
+
+#endif // AST_H

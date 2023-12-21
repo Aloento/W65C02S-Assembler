@@ -12,8 +12,8 @@ bisontester: lex.yy.c bisontester.c pasm.tab.h utils.c utils.h ast.h ast.c
 	gcc -o bisontester bisontester.c lex.yy.c pasm.tab.c utils.c ast.c
 
 
-transformtester: lex.yy.c transformtester.c pasm.tab.h utils.c utils.h ast.h ast.c symboltable.h symboltable.c machinecodes.c machinecodes.h
-	gcc -o transformtester -Wall -O1 transformtester.c lex.yy.c pasm.tab.c utils.c ast.c symboltable.c machinecodes.c 
+transformtester: lex.yy.c transformtester.c pasm.tab.h utils.c utils.h ast.h ast.c symboltable.h symboltable.c  machinecodes.h machinecodes.c
+	gcc -Wall -std=gnu11 -o transformtester transformtester.c lex.yy.c pasm.tab.c utils.c ast.c symboltable.c machinecodes.c
 
 lex.yy.c: pasm.flex pasm.tab.h
 	flex pasm.flex
@@ -32,4 +32,5 @@ test: lexertester bisontester transformtester
 	./bisontester < test2.txt
 	echo "next"
 	./bisontester < test3.txt
+	
 
